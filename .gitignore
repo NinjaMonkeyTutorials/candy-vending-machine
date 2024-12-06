@@ -1,0 +1,83 @@
+#---------------------------------------------------------
+#							common
+#---------------------------------------------------------
+
+# ignore entire 'IM' directory
+[Ii][Mm]/
+
+# ignore any temporary directory
+[tT][mM][pP]/
+[tT][eE][mM][pP]/
+
+# ignore any *.backup directory
+*.[Bb][Aa][cC][Kk][uU][Pp]/
+
+# ignore any log directory
+[lL][oO][gG]/
+[lL][oO][gG][sS]/
+
+#ignore archive folders
+[Aa][Rr][Cc][Hh][Ii][Vv][Ee]/
+[Aa][Rr][Cc][Hh][Ii][Vv]/
+
+# ignore backup files
+*.bak
+
+# ignore enterprise architect ldb
+*.ldb
+
+# ignore any file starting with a tilde
+~*.*
+
+# ignore any file with file extension tmp or temp
+*.[tT][mM][pP]
+*.[tT][eE][mM][pP]
+
+# ignore info files
+*.info
+
+# ignore log files
+*.log
+
+#---------------------------------------------------------
+#					Beckhoff specific
+#---------------------------------------------------------
+
+#ignore not required files
+**/.vs/
+*.~u
+*.project.~u
+*.suo
+*.tmcRefac
+*.plcproj.bak
+*.plcproj.orig
+*.tpy
+*.tclrs
+*.compileinfo
+*.asm
+*.core
+LineIDs.dbg
+LineIDs.dbg.bak
+*.tsproj.bak
+*.tsproj.b?k
+*.tsproj.orig
+*.xti.bak
+*.xti.bk?
+*.xti.orig
+*.xtv
+*.xtv.bak
+*.xtv.bk?
+
+# ignore not required folders
+**/_Boot/
+**/_CompileInfo/
+**/_ModuleInstall/
+**/_Deployment/
+**/_Repository/
+**/Release/
+**/x64Debug/
+**/x64Release/
+**/x86Debug/
+**/x86Release/
+**/_output/
+**/.TcGit/
