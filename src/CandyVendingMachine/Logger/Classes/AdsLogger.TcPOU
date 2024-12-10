@@ -1,0 +1,538 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="AdsLogger" Id="{4dd5f8c5-80ff-47f9-a900-b2ed370b0f80}" SpecialFunc="None">
+    <Declaration><![CDATA[(*
+
+short summary
+=============
+a logger to write ADSLOG messages 
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+FUNCTION_BLOCK AdsLogger EXTENDS AbstractLogger
+VAR
+	(* buffer to store the messages *)
+	messages		:POINTER TO POINTER TO AdsLogMessage;
+	(* size of the message buffer *)
+	size			:DWORD;
+	(* the message buffer is a simple ring buffer this the read pointer for it *)
+	readPointer		:DWORD := 0;
+	(* the message buffer is a simple ring buffer this the write pointer for it *)
+	writePointer	:DWORD := 0;
+END_VAR
+VAR CONSTANT
+	(* inital message buffer size *) 
+	MIN_BUFFER_SIZE :DWORD := 255;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="appendNewMessage" Id="{876b4373-2e8a-4c27-92ae-562fbb00e5db}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+this method appends a log message to the message buffer
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD PRIVATE appendNewMessage
+VAR_INPUT
+	(* ADSLOG message mask *)
+	messageType :DWORD;
+END_VAR
+VAR_IN_OUT
+	(* content of the log message *)
+	message :Tc2_System.T_MaxString;
+END_VAR
+VAR
+	(* pointer to the new log message *) 
+	new	:POINTER TO AdsLogMessage;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF (THIS^.isBufferFull OR (THIS^.messages = 0)) THEN
+	THIS^.resize();
+END_IF
+RETURN((THIS^.messages = 0) OR_ELSE THIS^.isBufferFull);
+
+new := __NEW(AdsLogMessage(msg := message, msgType := messageType));
+RETURN(new = 0);
+THIS^.messages[THIS^.writePointer] := new;
+THIS^.writePointer := THIS^.incrementBufferPointer(THIS^.writePointer);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="critical" Id="{f2f7efda-a496-46a0-90cf-9c7eec0750f1}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+writes a log message for a critical event
+It will be stored in the twinCAT logbook 
+and open a message box
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD critical
+VAR_INPUT
+	(* log message to write *)
+	message :Tc2_System.T_MaxString;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.appendNewMessage(
+	Tc2_System.ADSLOG_MSGTYPE_ERROR OR Tc2_System.ADSLOG_MSGTYPE_RESOURCE OR Tc2_System.ADSLOG_MSGTYPE_MSGBOX, 
+	message
+);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="debug" Id="{fcd0158e-e081-4c75-9d21-da6c025cc1b4}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+method to log a debug message
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD debug
+VAR_INPUT
+	(* log message to write *)
+	message :Tc2_System.T_MaxString;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.appendNewMessage(Tc2_System.ADSLOG_MSGTYPE_HINT, message);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="error" Id="{e613e20b-a599-4d55-bd51-756c0cd4a01b}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+method to log a error message
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD error
+VAR_INPUT
+	(* log message to write *)
+	message :Tc2_System.T_MaxString;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.appendNewMessage(Tc2_System.ADSLOG_MSGTYPE_ERROR, message);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="FB_exit" Id="{0f0aa8f7-c158-4b34-9159-9956ff03f728}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+this method clean up the memory
+(free it again)
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD FB_exit :BOOL
+VAR_INPUT
+	(* if TRUE, the exit method is called for exiting an instance that is copied afterwards (online change). *)
+	bInCopyCode :BOOL;
+END_VAR
+VAR
+	(* buffer pointer to free the message buffer memory again *)
+	buffer 		:POINTER TO __XWORD;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[RETURN(THIS^.messages = 0);
+WHILE (NOT THIS^.isBufferEmpty) DO
+	THIS^.printMessage();
+END_WHILE
+buffer := THIS^.messages;
+__DELETE(buffer);
+THIS^.messages := 0;
+THIS^.size := 0;
+THIS^.writePointer := 0;
+THIS^.readPointer := 0;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="incrementBufferPointer" Id="{9fc2393d-c7e0-4585-a4aa-d9c0756bb36a}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+method to increment the read and write pointer
+of the message buffer
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD PRIVATE incrementBufferPointer :DWORD
+VAR_INPUT
+	(* current pointer value *)
+	bufferPointer :DWORD;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[incrementBufferPointer := ((bufferPointer + 1) MOD THIS^.size);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="info" Id="{81e488b2-8210-423a-a0bf-8d443e8e0ad8}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+method to log a info message
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD info
+VAR_INPUT
+	(* log message to write *)
+	message :Tc2_System.T_MaxString;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.appendNewMessage(Tc2_System.ADSLOG_MSGTYPE_HINT, message);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="isBufferEmpty" Id="{e294066d-0e4d-4a97-ad29-5d167c7da3d7}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+property to check if the
+ring buffer is empty
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+PROPERTY PRIVATE isBufferEmpty :BOOL]]></Declaration>
+      <Get Name="Get" Id="{b7297355-9d32-4228-a5d3-4dccbd2630ed}">
+        <Declaration><![CDATA[(*
+
+short summary
+=============
+getter of the property to check if the
+ring buffer is empty
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[isBufferEmpty := (THIS^.readPointer = THIS^.writePointer);]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="isBufferFull" Id="{a353af57-1684-48a2-90b0-4d9f7aa89900}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+property to check if the
+ring buffer is full
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+PROPERTY PRIVATE isBufferFull :BOOL]]></Declaration>
+      <Get Name="Get" Id="{2e2929b1-2c30-44c8-bd69-66b6aca7cc6f}">
+        <Declaration><![CDATA[(*
+
+short summary
+=============
+getter of the property to check if the
+ring buffer is full
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[isBufferFull := (THIS^.incrementBufferPointer(THIS^.writePointer) = THIS^.readPointer);
+]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="printMessage" Id="{ac4f73fc-feee-4c70-9ce4-a0bfcf3ab4e3}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+method to write the log message to
+ADSLOG and it frees the memory of
+the message again
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD PRIVATE printMessage
+VAR
+	(* message pointer to free the memory again *)
+	msg :POINTER TO AdsLogMessage;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF (THIS^.messages[THIS^.readPointer] <> 0) THEN
+	Tc2_System.ADSLOGSTR(
+		msgCtrlMask := THIS^.messages[THIS^.readPointer]^.messageType,
+		msgFmtStr := '%s',
+		strArg := THIS^.messages[THIS^.readPointer]^.message
+	);
+	msg := THIS^.messages[THIS^.readPointer];
+	__DELETE(msg);
+	THIS^.messages[THIS^.readPointer] := 0;
+END_IF
+THIS^.readPointer := THIS^.incrementBufferPointer(THIS^.readPointer);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="resize" Id="{3b793a4f-102e-4df0-9c22-f138e7a23258}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+this method resizes the messages buffer
+if it is full or not created
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD PRIVATE resize
+VAR
+	(* new buffer for the messages array *)
+	newBuffer 			:POINTER TO __XWORD;
+	(* just to free the memory again *)
+	oldBuffer 			:POINTER TO __XWORD;
+	(* pointer with the smaller value *)
+	minPointer  		:DWORD;
+	(* pointer with the bigger value *)
+	maxPointer  		:DWORD;
+	(* new position in new message buffer of the pointer with the bigger value *)
+	newMaxPointerPos	:DWORD;
+	(* number of elements to copy for the pointer with the bigger value *)
+	amountMaxPointer	:DWORD;
+	(* new size of the messages buffer *)
+	newSize 			:DWORD;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[newSize := MAX(THIS^.MIN_BUFFER_SIZE, THIS^.size * 2);
+RETURN(newSize < THIS^.size);
+newBuffer := __NEW(__XWORD, newSize);
+RETURN(newBuffer = 0);
+IF (NOT THIS^.isBufferEmpty) THEN
+	minPointer := MIN(THIS^.writePointer, THIS^.readPointer);
+	maxPointer := MAX(THIS^.writePointer, THIS^.readPointer);
+	amountMaxPointer := SEL(
+		((THIS^.size-1) = maxPointer),
+		((THIS^.size-1)-maxPointer),
+		THIS^.size-1
+	);
+	newMaxPointerPos := ((newSize-1)-amountMaxPointer);
+	Tc2_System.MEMCPY(
+		destAddr	:= newBuffer,
+		srcAddr		:= THIS^.messages,
+		n			:= ((minPointer+1)*SIZEOF(__XWORD))
+	);
+	Tc2_System.MEMCPY(
+		destAddr	:= ADR(newBuffer[SEL(((THIS^.size-1) = maxPointer),newMaxPointerPos,minPointer+1)]),
+		srcAddr		:= ADR(THIS^.messages[minPointer+1]),
+		n			:= (amountMaxPointer*SIZEOF(__XWORD))
+	);
+	IF (THIS^.readPointer > THIS^.writePointer) THEN
+		THIS^.readPointer := newMaxPointerPos;
+	ELSE
+		THIS^.writePointer := newMaxPointerPos;
+	END_IF
+END_IF
+IF (THIS^.messages <> 0) THEN
+	oldBuffer := THIS^.messages;
+	__DELETE(oldBuffer);
+END_IF
+THIS^.messages := newBuffer;
+THIS^.size := newSize;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="run" Id="{ef11555d-b9e4-44a9-84ae-f7f26d380d84}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+fetches the messages from buffer and
+writes it to ADSLOG. This method must
+be called cyclic.
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD run
+VAR_INST
+	(* TON timer to write the messages in a serial way *)
+	printNextMsg	:Tc2_Standard.TON;	
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[RETURN(THIS^.messages = 0);
+printNextMsg(IN:= TRUE, PT:=T#30MS);
+RETURN(NOT printNextMsg.Q);
+RETURN(THIS^.isBufferEmpty);
+printNextMsg(IN:= FALSE);
+THIS^.printMessage();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="warning" Id="{c151e314-fe27-44d3-8d24-4b3bf10849e5}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+method to log a warning message
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD warning
+VAR_INPUT
+	(* log message to write *)
+	message :Tc2_System.T_MaxString;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.appendNewMessage(Tc2_System.ADSLOG_MSGTYPE_WARN, message);
+]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

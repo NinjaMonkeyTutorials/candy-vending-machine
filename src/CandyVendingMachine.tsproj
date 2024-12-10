@@ -11,7 +11,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{7E693ABB-5DD3-43A8-8264-986995312A86}" Name="CandyVendingMachine" PrjFilePath="CandyVendingMachine\CandyVendingMachine.plcproj" TmcFilePath="CandyVendingMachine\CandyVendingMachine.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{3A955CC3-9238-977A-CE63-E06C396CAB7B}" TmcPath="CandyVendingMachine\CandyVendingMachine.tmc">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{4AF240F2-1E4C-B777-E0FD-2BE143488479}" TmcPath="CandyVendingMachine\CandyVendingMachine.tmc">
 					<Name>CandyVendingMachine Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Contexts>
