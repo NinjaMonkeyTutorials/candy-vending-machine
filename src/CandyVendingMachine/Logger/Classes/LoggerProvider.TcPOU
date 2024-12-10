@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="LoggerProvider" Id="{90646cd8-5f9d-4d3d-a1bc-eafd2311d2f8}" SpecialFunc="None">
+    <Declaration><![CDATA[(*
+
+short summary
+=============
+A layer to hide the concrete used logger
+and to make it easy to use the same logger
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+FUNCTION_BLOCK LoggerProvider
+VAR_STAT
+	(* differnt logger injected from outside *)
+	injectedLogger	:REFERENCE TO AbstractLogger;
+	(* default logger if nothing was injected *)
+	defaultLogger 	:AdsLogger();
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="FB_init" Id="{745ff343-a3fb-4c16-9d6f-0baf5d771eec}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+this method provides the possibility
+to use a differnt logger for example
+a file logger. 
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD FB_init :BOOL
+VAR_INPUT
+	(* if TRUE, the retain variables are initialized (warm start / cold start) *)
+	bInitRetains	:BOOL;
+	(* if TRUE, the instance afterwards gets moved into the copy code (online change) *) 
+	bInCopyCode		:BOOL;
+	(* if no other logger is required then use just 0 as parameter *)
+	otherLogger		:REFERENCE TO AbstractLogger;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF (__ISVALIDREF(otherLogger) AND_THEN NOT __ISVALIDREF(THIS^.injectedLogger)) THEN
+	THIS^.injectedLogger REF= otherLogger;
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="logger" Id="{558e772d-e29f-410d-a664-838affa693e5}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+property to get the used logger instance
+ 
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+PROPERTY logger :REFERENCE TO AbstractLogger]]></Declaration>
+      <Get Name="Get" Id="{3867c407-f601-43f6-8281-613a1a7af723}">
+        <Declaration><![CDATA[(*
+
+short summary
+=============
+getter of the property to get the used logger instance
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IF (__ISVALIDREF(THIS^.injectedLogger)) THEN
+	logger REF= THIS^.injectedLogger;
+ELSE
+	logger REF= THIS^.defaultLogger;
+END_IF
+]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+  </POU>
+</TcPlcObject>

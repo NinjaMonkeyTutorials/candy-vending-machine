@@ -147,6 +147,9 @@
     <Compile Include="Logger\Classes\AdsLogMessage.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Logger\Classes\LoggerProvider.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="NinjaCandyBehavior\Classes\AbstractNinjaCandyConsumeBehavior.TcPOU">
       <SubType>Code</SubType>
     </Compile>
