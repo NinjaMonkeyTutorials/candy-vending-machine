@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="IndividualCandyPreferences" Id="{6cccd3f5-87ca-4f82-b3d2-2624c214efcd}" SpecialFunc="None">
+    <Declaration><![CDATA[(*
+
+short summary
+=============
+This abstraction is to define different preferences for all types of candies 
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+FUNCTION_BLOCK ABSTRACT IndividualCandyPreferences
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="howIsTheCandy" Id="{2c6e9e5f-15f0-497a-b801-2a5204497f81}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+This method is to get the tastiness for a given candy type
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+METHOD ABSTRACT howIsTheCandy :TasteScale
+VAR_INPUT
+	(* candy type to get the tastiness for it *)
+	candyType :CandyTypes;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

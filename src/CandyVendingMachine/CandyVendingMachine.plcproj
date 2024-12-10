@@ -144,6 +144,9 @@
     <Compile Include="NinjaCandyBehavior\types\Enums\TasteScale.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="NinjaMonkeys\Classes\IndividualCandyPreferences.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Tasks\Main\MAIN.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -169,9 +172,11 @@
     <Folder Include="CandyMachineProvider\Classes" />
     <Folder Include="CandyMachine\Classes" />
     <Folder Include="CandyMachineProvider" />
+    <Folder Include="NinjaMonkeys" />
     <Folder Include="NinjaCandyBehavior" />
     <Folder Include="NinjaCandyBehavior\types" />
     <Folder Include="NinjaCandyBehavior\types\Enums" />
+    <Folder Include="NinjaMonkeys\Classes" />
     <Folder Include="Tasks" />
     <Folder Include="Tasks\Main" />
   </ItemGroup>
