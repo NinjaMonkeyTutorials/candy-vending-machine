@@ -1,0 +1,186 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="AbstractLogger" Id="{c93157ee-2491-4466-825f-de4e24dd0bad}" SpecialFunc="None">
+    <Declaration><![CDATA[(*
+
+short summary
+=============
+just abstract logger for the
+possibility exchange the logger
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+FUNCTION_BLOCK ABSTRACT AbstractLogger EXTENDS AnyToTArgConverter
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="critical" Id="{a0213266-bc6a-4c51-be53-784f5c79749b}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+method to log a critical event
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD ABSTRACT critical
+VAR_INPUT
+	(* log message to write *)
+	message :Tc2_System.T_MaxString;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="debug" Id="{2162268f-d291-45c4-ad28-d4d2780f39bc}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+method to log a debug message
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD ABSTRACT debug
+VAR_INPUT
+	(* log message to write *)
+	message :Tc2_System.T_MaxString;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="error" Id="{1bd8fca9-6e40-442d-82b3-5b9a46686db9}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+method to log a error message
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD ABSTRACT error
+VAR_INPUT
+	(* log message to write *)
+	message :Tc2_System.T_MaxString;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="info" Id="{ab80ba19-a094-4d30-be72-271cb90f91a0}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+method to log a info message
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD ABSTRACT info
+VAR_INPUT
+	(* log message to write *)
+	message :Tc2_System.T_MaxString;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="run" Id="{38e82462-d316-4e51-8158-4485e93a4e9b}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+worker method to wirte the logging stream
+to a traget, it must be called cyclic
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD run
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="warning" Id="{8f3cb271-c40f-475e-99e1-0e42a41c5623}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+method to log a warning message
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD ABSTRACT warning
+VAR_INPUT
+	(* log message to write *)
+	message :Tc2_System.T_MaxString;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>
