@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="TwizzlersLicorizeTwists" Id="{1190c7ff-cbca-40d6-954f-904489de1f2b}" SpecialFunc="None">
+    <Declaration><![CDATA[(*
+
+short summary
+=============
+A specialized candy. It can be consumed by any candy consumer.
+It supports dynamic creation. Furthermore, it calls the method 
+AbstractCandy.initializeDispatchers after FB_init.
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+{attribute 'enable_dynamic_creation'}
+{attribute 'call_after_init'}
+FUNCTION_BLOCK FINAL TwizzlersLicorizeTwists EXTENDS AbstractCandy
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="FB_init" Id="{1d9ab551-e487-4512-a247-41cea276c81e}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+it initializes the amount, the candy name and 
+the binary coded candy type  
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD FB_init :BOOL
+VAR_INPUT
+	(* if TRUE, the retain variables are initialized (warm start / cold start) *)
+	bInitRetains	:BOOL;
+	(* if TRUE, the instance afterwards gets moved into the copy code (online change) *)
+	bInCopyCode		:BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.amount := 454;
+THIS^.name := 'Twizzlers Black Licorice Twists';
+THIS^.candyType := CandyTypes.LICORICE_CANDY OR CandyTypes.GUMMY_CANDY;
+]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

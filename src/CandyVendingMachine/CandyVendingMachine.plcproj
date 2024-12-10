@@ -24,6 +24,33 @@
     <Compile Include="Candies\Classes\AbstractCandy.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Candies\Classes\Alpenliebe.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Candies\Classes\Altoids.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Candies\Classes\BobsSweetStripes.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Candies\Classes\BrachsCandyCorn.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Candies\Classes\ChupaChups.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Candies\Classes\SkittlesSour.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Candies\Classes\SnickersBar.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Candies\Classes\TwizzlersLicorizeTwists.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Candies\Classes\WonkaGobstopper.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Candies\Types\Aliases\CandyAmountInGram.TcDUT">
       <SubType>Code</SubType>
     </Compile>

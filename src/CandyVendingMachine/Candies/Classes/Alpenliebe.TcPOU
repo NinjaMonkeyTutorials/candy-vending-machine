@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="Alpenliebe" Id="{9a96e060-9990-4afd-add3-2641b284600a}" SpecialFunc="None">
+    <Declaration><![CDATA[(*
+
+short summary
+=============
+A specialized candy. It can be consumed by any candy consumer.
+It supports dynamic creation. Furthermore, it calls the method 
+AbstractCandy.initializeDispatchers after FB_init.
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+{attribute 'enable_dynamic_creation'}
+{attribute 'call_after_init'}
+FUNCTION_BLOCK FINAL Alpenliebe EXTENDS AbstractCandy
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="FB_init" Id="{22b4546e-3baf-4018-ab70-c3a998eae100}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+it initializes the amount, the candy name and 
+the binary coded candy type  
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD FB_init :BOOL
+VAR_INPUT
+	(* if TRUE, the retain variables are initialized (warm start / cold start) *)
+	bInitRetains	:BOOL;
+	(* if TRUE, the instance afterwards gets moved into the copy code (online change) *)
+	bInCopyCode		:BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.amount := 156;
+THIS^.name := 'Alpenliebe Gold';
+THIS^.candyType := CandyTypes.HARD_CANDY OR CandyTypes.CARAMEL_CANDY;
+]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>
