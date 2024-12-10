@@ -43,7 +43,7 @@ Welcome to the **Ninja Monkey Function Blocks** repository! This is the companio
         - [🛑 Picky Ninja Candy Behavior](#pickyninjacandybehavior)  
 
 * [📜 Version Log](#version-log)
-
+    - [🎉 Versions](#Versions)
 
 ## What is inside
 
@@ -979,8 +979,81 @@ classDiagram
 ### Versions 
 
 1.	[0.0.0.0](#0000)
+2.	[1.0.0.0](#1000)
 
-### 0.0.0.0 
+#### 0.0.0.0 
 _initial commit_
 
+#### 1.0.0.0
 
+This major release marks the completion of the foundational features of the **Candy Vending Machine Project**. The following is a detailed summary of the changes and features implemented in this version:
+
+---
+
+##### 🛠️ **Core Abstractions and Classes**
+1. **Candy Machine Framework**:
+   - Introduced `AbstractCandyMachine` to establish a flexible foundation for different consumer behaviors.
+   - Implemented concrete candy machines:
+     - `CommonCandyMachine` as the default.
+     - `PickyCandyMachine` tailored for selective consumers like Ajnin.
+     - `GreedyCandyMachine` designed for voracious consumers like Yeknom.
+   - Added `AbstractCandyMachineProvider` to manage shared and custom candy machines with efficient memory usage via `VAR_STAT`.
+
+2. **Candy Consumer**:
+   - Developed `AbstractCandyConsumer` to define candy consumption behaviors.
+   - Created the first concrete consumer, `NinjaMonkey`:
+     - Automatically sets its name using instance paths with `{attribute 'reflection'}`.
+     - Supports default and custom behaviors/preferences.
+     - Implements `lootCandies` and `eat` methods.
+
+3. **Candy Preferences**:
+   - Introduced `IndividualCandyPreferences` for custom preferences.
+   - Implemented `AjninsCandyPreferences` for picky monkeys; no preferences needed for greedy consumers like Yeknom.
+
+4. **Candies**:
+   - Built `AbstractCandy` as the foundation for all candies.
+   - Added methods for logging, dispatcher management, and consumption handling.
+   - Introduced concrete candies (`Goldbears`, `MnMs`, `Poppins`) for diverse use cases.
+
+---
+
+##### 📝 **Logging System**
+1. **AbstractLogger**:
+   - Defined an abstraction for flexible logging with methods for different log levels (`critical`, `error`, `warning`, `info`, `debug`).
+   - Includes a `run` method for cyclic processing of buffered log messages.
+
+2. **AdsLogger**:
+   - Implemented a concrete logger with an internal ring buffer queue for message storage.
+   - Supports dynamic resizing and ensures messages are printed with a 30ms delay for orderly outputs.
+   - Integrated cleanup through the `FB_exit` method.
+
+3. **LoggerProvider**:
+   - Centralized logging management with `AdsLogger` as the default.
+   - Ensures a single logger instance across the entire project.
+
+4. **Integration**:
+   - Integrated the new logger into `AbstractCandy.logCandyConsume` for well-ordered log messages.
+   - Set up the `LoggerProvider` in the main task for consistent pre-use configuration.
+
+---
+
+##### 🌟 **Key Features and Enhancements**
+- **Behavior**:
+  - Added `AbstractNinjaCandyConsumeBehavior` to define how monkeys loot candy machines and calculate satisfaction levels.
+  - Implemented:
+    - `CommonNinjaCandyBehavior` with satisfaction calculated using a logarithm (base 6.359).
+    - `GreedyNinjaCandyBehavior` and `PickyNinjaCandyBehavior` with tailored satisfaction calculations and distinct default providers.
+
+- **Utility Enhancements**:
+  - Created `AdsLogMessage` as a DTO for buffered ADS log messages with dynamic creation support.
+
+- **Testing and Integration**:
+  - Added monkey instances in the main task to verify functionality.
+  - Log messages are now well-ordered, providing consistent and clear feedback.
+
+---
+
+### 🎉 **Version Highlights**
+Version 1.0.0.0 provides a robust and scalable software for the **Candy Vending Machine Project**, supporting diverse consumer behaviors, flexible logging, and customizable candy handling. This release lays a solid foundation for future enhancements and showcases the power of abstraction and modular design.
+
+🍬 **Ninja Monkeys are ready to loot candy machines in style!** 🐒✨
