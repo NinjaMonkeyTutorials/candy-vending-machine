@@ -372,6 +372,10 @@ VAR
 	*)
 	statisfaction	:SatisfactionLevelInPercent;
 END_VAR
+VAR
+	(* just a provider for a logger *)
+	loggingProvider :LoggerProvider(0);
+END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[statisfaction := consumer.levelOfSatisfaction;
@@ -385,11 +389,7 @@ stringFromatter(
 	arg5 := THIS^.anyToArg(statisfaction),
 );
 
-Tc2_System.ADSLOGSTR(
-	msgCtrlMask := Tc2_System.ADSLOG_MSGTYPE_HINT,
-	msgFmtStr := '%s',
-	strArg := stringFromatter.sOut
-);
+loggingProvider.logger.info(stringFromatter.sOut);
 ]]></ST>
       </Implementation>
     </Method>
