@@ -1,12 +1,45 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <POU Name="MAIN" Id="{e86b2847-51a2-4536-ae42-834fd4ee1642}" SpecialFunc="None">
-    <Declaration><![CDATA[PROGRAM MAIN
+    <Declaration><![CDATA[(*
+
+short summary
+=============
+this is the main task of the
+candy vending machine application
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+PROGRAM MAIN
 VAR
+	(* behavior for a greedy candy consuming ninja *)
+	greedy				:GreedyNinjaCandyBehavior(0);
+	(* behavior for a picky candy consuming ninja *)
+	picky				:PickyNinjaCandyBehavior(0);
+	(* candy preferences of Ajnin *)
+	ajninPreferences	:AjninsCandyPreferences();
+	(* yeknom as candy consumer *)
+	yeknom				:NinjaMonkey(0,0);
+	(* ajnin as candy consumer *)
+	ajnin				:NinjaMonkey(picky, ajninPreferences);
+	(* rising edge will feed Ajnin *)
+	feedAjnin			:BOOL;
+	(* rising edge will feed Yeknom *)
+	feedYeknom			:BOOL; 
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[]]></ST>
+      <ST><![CDATA[ajnin.lootCandies(feedAjnin);
+yeknom.lootCandies(feedYeknom);
+]]></ST>
     </Implementation>
   </POU>
 </TcPlcObject>
