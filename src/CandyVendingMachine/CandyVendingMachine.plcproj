@@ -123,6 +123,9 @@
     <Compile Include="CandyMachine\Classes\AbstractCandyMachine.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="CandyMachine\Classes\PickyCandyMachine.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="NinjaCandyBehavior\types\Enums\ConsumerTypes.TcDUT">
       <SubType>Code</SubType>
     </Compile>
