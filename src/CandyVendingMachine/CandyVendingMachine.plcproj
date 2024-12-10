@@ -45,6 +45,45 @@
     <Compile Include="CandyDispatchers\Classes\AbstractCandyDispatcher.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="CandyDispatchers\Classes\CandyBarDispatcher.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CandyDispatchers\Classes\CandyCornDispatcher.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CandyDispatchers\Classes\CandyDispatcherFactory.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CandyDispatchers\Classes\CandySticksDispatcher.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CandyDispatchers\Classes\CaramelCandyDispatcher.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CandyDispatchers\Classes\ChoclateCandyDispatcher.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CandyDispatchers\Classes\GummyCandyDispatcher.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CandyDispatchers\Classes\HardCandyDispatcher.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CandyDispatchers\Classes\JawbreakersDispatcher.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CandyDispatchers\Classes\LicoriceCandyDispatcher.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CandyDispatchers\Classes\LollipopsDispatcher.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CandyDispatchers\Classes\MintsDispatcher.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CandyDispatchers\Classes\SourCandyDispatcher.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Tasks\Main\MAIN.TcPOU">
       <SubType>Code</SubType>
     </Compile>

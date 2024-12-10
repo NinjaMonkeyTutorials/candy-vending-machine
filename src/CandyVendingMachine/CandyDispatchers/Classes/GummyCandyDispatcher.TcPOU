@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="GummyCandyDispatcher" Id="{ce76a8e8-6991-422b-8d79-c7c50ea20e93}" SpecialFunc="None">
+    <Declaration><![CDATA[(*
+
+short summary
+=============
+dispather for gummy candy
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+{attribute 'enable_dynamic_creation'}
+FUNCTION_BLOCK FINAL GummyCandyDispatcher EXTENDS AbstractCandyDispatcher
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="eat" Id="{302719f3-7122-4dc9-8c6f-9200718d974b}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+this method dispatches gummy candies
+to a candy consumer 
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD eat
+VAR_INPUT
+	(* consumer who eats the candy *)
+	consumer	:REFERENCE TO AbstractCandyConsumer;
+	(* candy amount in gram *)
+	amount		:CandyAmountInGram;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[RETURN(THIS^.eatCandiesIsImpossible(consumer, amount));
+consumer.eatGummyCandy(amount);
+]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

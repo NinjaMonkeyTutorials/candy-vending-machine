@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="CandyDispatcherFactory" Id="{64f9e794-315b-4eea-ba94-a7abb3d12cae}" SpecialFunc="None">
+    <Declaration><![CDATA[(*
+
+short summary
+=============
+factory class to create new 
+dispatcher according to the candy type
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+FUNCTION_BLOCK FINAL CandyDispatcherFactory
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="getNewCandyDispatcherFor" Id="{259dfbe5-1917-45ef-8ec0-78e1f89c0081}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+method creates a new dispatcher instance
+for a given candy type, but it must be a 
+pure candy type. To free the memory again
+use the destruct method of the dispatcher.
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD getNewCandyDispatcherFor :POINTER TO AbstractCandyDispatcher
+VAR_INPUT
+	(* candy type to create the right dispatcher, it must be a pure candy type *) 
+	candyType	:CandyTypes;
+END_VAR
+VAR
+	(* the __NEW operator requires a stricktly typed pointer *)
+	candyBarDelegator		:POINTER TO CandyBarDispatcher;
+	(* the __NEW operator requires a stricktly typed pointer *)
+	candyCornDelegator		:POINTER TO CandyCornDispatcher;
+	(* the __NEW operator requires a stricktly typed pointer *)
+	candySticksDelegator	:POINTER TO CandySticksDispatcher; 
+	(* the __NEW operator requires a stricktly typed pointer *)
+	caramelCandyDelegator	:POINTER TO CaramelCandyDispatcher;
+	(* the __NEW operator requires a stricktly typed pointer *)
+	chocolateCandyDelegator	:POINTER TO ChoclateCandyDispatcher;
+	(* the __NEW operator requires a stricktly typed pointer *)
+	gummyCandyDelegator		:POINTER TO GummyCandyDispatcher;
+	(* the __NEW operator requires a stricktly typed pointer *)
+	mintsDelegator			:POINTER TO MintsDispatcher;
+	(* the __NEW operator requires a stricktly typed pointer *)
+	lolliposDelegator		:POINTER TO LollipopsDispatcher;
+	(* the __NEW operator requires a stricktly typed pointer *)
+	jawbreakersDelegator	:POINTER TO JawbreakersDispatcher; 
+	(* the __NEW operator requires a stricktly typed pointer *)
+	hardCandyDelegator		:POINTER TO HardCandyDispatcher;
+	(* the __NEW operator requires a stricktly typed pointer *)
+	licoriceDelegator		:POINTER TO LicoriceCandyDispatcher;
+	(* the __NEW operator requires a stricktly typed pointer *)
+	sourCandyDelegator		:POINTER TO SourCandyDispatcher;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[getNewCandyDispatcherFor := 0;
+CASE candyType OF
+CandyTypes.CANDY_BARS:
+	candyBarDelegator := __NEW(CandyBarDispatcher());
+	getNewCandyDispatcherFor := candyBarDelegator;
+CandyTypes.CANDY_CORN:
+	candyCornDelegator := __NEW(CandyCornDispatcher());
+	getNewCandyDispatcherFor := candyCornDelegator;
+CandyTypes.CANDY_STICKS:
+	candySticksDelegator := __NEW(CandySticksDispatcher());
+	getNewCandyDispatcherFor := candySticksDelegator;	
+CandyTypes.CARAMEL_CANDY:
+	caramelCandyDelegator := __NEW(CaramelCandyDispatcher());
+	getNewCandyDispatcherFor := caramelCandyDelegator;	
+CandyTypes.CHOCOLATE_CANDY:
+	chocolateCandyDelegator := __NEW(ChoclateCandyDispatcher());
+	getNewCandyDispatcherFor := chocolateCandyDelegator;	
+CandyTypes.GUMMY_CANDY:
+	gummyCandyDelegator := __NEW(GummyCandyDispatcher());
+	getNewCandyDispatcherFor := gummyCandyDelegator;	
+CandyTypes.HARD_CANDY:
+	hardCandyDelegator := __NEW(HardCandyDispatcher());
+	getNewCandyDispatcherFor := hardCandyDelegator;	
+CandyTypes.JAWBREAKERS:
+	jawbreakersDelegator := __NEW(JawbreakersDispatcher());
+	getNewCandyDispatcherFor := jawbreakersDelegator;	
+CandyTypes.LICORICE_CANDY:
+	licoriceDelegator := __NEW(LicoriceCandyDispatcher());
+	getNewCandyDispatcherFor := licoriceDelegator;	
+CandyTypes.LOLLIPOPS:
+	lolliposDelegator := __NEW(LollipopsDispatcher());
+	getNewCandyDispatcherFor := lolliposDelegator;	
+CandyTypes.MINTS:
+	mintsDelegator := __NEW(MintsDispatcher());
+	getNewCandyDispatcherFor := mintsDelegator;
+CandyTypes.SOUR_CANDY:
+	sourCandyDelegator := __NEW(SourCandyDispatcher());
+	getNewCandyDispatcherFor := sourCandyDelegator;
+ELSE
+	RETURN;
+END_CASE
+]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>
