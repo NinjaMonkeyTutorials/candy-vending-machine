@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="CandyName" Id="{adca58ef-d5d7-4f97-a612-05e0a71afb9c}">
+    <Declaration><![CDATA[(*
+
+short summary
+=============
+T_MaxString alias for the candy name.  
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+TYPE CandyName :
+	Tc2_System.T_MaxString; 
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

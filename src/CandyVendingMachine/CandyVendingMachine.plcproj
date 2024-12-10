@@ -21,6 +21,12 @@
     <Compile Include="AnyToArg\Classes\AnyToTArgConverter.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Candies\Types\Aliases\CandyAmountInGram.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Candies\Types\Aliases\CandyName.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Candies\Types\Enums\CandyTypes.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -36,6 +42,7 @@
     <Folder Include="AnyToArg\Classes" />
     <Folder Include="Candies" />
     <Folder Include="Candies\Types" />
+    <Folder Include="Candies\Types\Aliases" />
     <Folder Include="Candies\Types\Enums" />
     <Folder Include="Tasks" />
     <Folder Include="Tasks\Main" />

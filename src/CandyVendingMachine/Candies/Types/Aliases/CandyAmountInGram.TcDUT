@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="CandyAmountInGram" Id="{3ee13a8f-d5e6-4348-9bba-8c8c0a29ce1f}">
+    <Declaration><![CDATA[(*
+
+short summary
+=============
+Alias of the subrange UINT(0..500).
+It's used for the candy amount. The candy
+machine is able to handle packaging units up
+to 500 grams
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+TYPE CandyAmountInGram : 
+	UINT(0..500); 
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>
