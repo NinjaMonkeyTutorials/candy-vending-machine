@@ -156,6 +156,9 @@
     <Compile Include="NinjaCandyBehavior\types\Enums\TasteScale.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="NinjaMonkeys\Classes\AjninsCandyPreferences.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="NinjaMonkeys\Classes\IndividualCandyPreferences.TcPOU">
       <SubType>Code</SubType>
     </Compile>

@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="AjninsCandyPreferences" Id="{d4c01eb4-2401-4aac-9dd4-74d3e576b106}" SpecialFunc="None">
+    <Declaration><![CDATA[(*
+
+short summary
+=============
+Ajnins candy preferences
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+FUNCTION_BLOCK FINAL AjninsCandyPreferences EXTENDS IndividualCandyPreferences
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="howIsTheCandy" Id="{c904bb38-e43a-4907-ad91-839555bb9402}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+This method is to get the tastiness for a given candy type
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+METHOD howIsTheCandy :TasteScale
+VAR_INPUT
+	(* candy type to get the tastiness for it *)
+	candyType	:CandyTypes;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE candyType OF
+CandyTypes.CANDY_BARS:
+	howIsTheCandy := TasteScale.DELICIOUS;
+CandyTypes.CANDY_CORN:
+	howIsTheCandy := TasteScale.DISGUSTING;
+CandyTypes.CANDY_STICKS:
+	howIsTheCandy := TasteScale.DELICIOUS;
+CandyTypes.CARAMEL_CANDY:
+	howIsTheCandy := TasteScale.OKAY;
+CandyTypes.CHOCOLATE_CANDY:
+	howIsTheCandy := TasteScale.OKAY;
+CandyTypes.GUMMY_CANDY:
+	howIsTheCandy := TasteScale.DISGUSTING;
+CandyTypes.HARD_CANDY:
+	howIsTheCandy := TasteScale.DISGUSTING;
+CandyTypes.JAWBREAKERS:
+	howIsTheCandy := TasteScale.DELICIOUS;
+CandyTypes.LICORICE_CANDY:
+	howIsTheCandy := TasteScale.DISGUSTING;
+CandyTypes.LOLLIPOPS:
+	howIsTheCandy := TasteScale.DELICIOUS;
+CandyTypes.MINTS:
+	howIsTheCandy := TasteScale.DISGUSTING;
+CandyTypes.SOUR_CANDY:;
+	howIsTheCandy := TasteScale.DELICIOUS;
+ELSE
+	howIsTheCandy := TasteScale.OKAY;
+END_CASE
+]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>
