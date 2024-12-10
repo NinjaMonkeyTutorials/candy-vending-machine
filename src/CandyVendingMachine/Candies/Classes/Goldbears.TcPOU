@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="Goldbears" Id="{ecffbe6a-3471-48bd-842d-f566f2251b3b}" SpecialFunc="None">
+    <Declaration><![CDATA[(*
+
+short summary
+=============
+A specialized candy. It can be consumed by any candy consumer.
+It supports dynamic creation. Furthermore, it calls the method 
+AbstractCandy.initializeDispatchers after FB_init.
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+{attribute 'enable_dynamic_creation'}
+{attribute 'call_after_init'}
+FUNCTION_BLOCK FINAL Goldbears EXTENDS AbstractCandy
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="FB_init" Id="{e0bb74d1-ba3c-484d-8431-df12c27f1453}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+it initializes the amount, the candy name and 
+the binary coded candy type  
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD FB_init :BOOL
+VAR_INPUT
+	(* if TRUE, the retain variables are initialized (warm start / cold start) *)
+	bInitRetains	:BOOL;
+	(* if TRUE, the instance afterwards gets moved into the copy code (online change) *)
+	bInCopyCode		:BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.amount := 75;
+THIS^.name := 'HARIBO Goldbears';
+THIS^.candyType := CandyTypes.GUMMY_CANDY;
+]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

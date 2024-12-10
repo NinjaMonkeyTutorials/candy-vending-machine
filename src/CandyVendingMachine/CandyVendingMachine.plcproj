@@ -39,6 +39,15 @@
     <Compile Include="Candies\Classes\ChupaChups.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Candies\Classes\Goldbears.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Candies\Classes\MnMs.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Candies\Classes\Poppins.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Candies\Classes\SkittlesSour.TcPOU">
       <SubType>Code</SubType>
     </Compile>
