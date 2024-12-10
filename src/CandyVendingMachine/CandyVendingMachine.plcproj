@@ -21,6 +21,9 @@
     <Compile Include="AnyToArg\Classes\AnyToTArgConverter.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Candies\Types\Enums\CandyTypes.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Tasks\Main\MAIN.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -31,6 +34,9 @@
   <ItemGroup>
     <Folder Include="AnyToArg" />
     <Folder Include="AnyToArg\Classes" />
+    <Folder Include="Candies" />
+    <Folder Include="Candies\Types" />
+    <Folder Include="Candies\Types\Enums" />
     <Folder Include="Tasks" />
     <Folder Include="Tasks\Main" />
   </ItemGroup>
