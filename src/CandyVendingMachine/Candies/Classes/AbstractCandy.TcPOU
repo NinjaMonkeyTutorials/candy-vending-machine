@@ -1,0 +1,169 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="AbstractCandy" Id="{4f3702fb-a56e-469b-ae1f-5f4503a6d025}" SpecialFunc="None">
+    <Declaration><![CDATA[(*
+
+short summary
+=============
+This class is an abstraction layer for candies.
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+FUNCTION_BLOCK ABSTRACT AbstractCandy EXTENDS AnyToTArgConverter
+VAR
+	(* common candy type for example caramel candy *)
+	candyType		:CandyTypes;
+	(* name of the candy like snickers *)
+	name			:CandyName;
+	(* amount of the candy in gram because we use the metric system *)
+	amount			:CandyAmountInGram;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Folder Name="CandyProperties" Id="{dd3b08fb-149a-473f-b3f1-3a22f7180838}" />
+    <Property Name="amountOfCandy" Id="{4a91ad3a-a182-4c0c-bb51-35ed6f4a2bf3}" FolderPath="CandyProperties\">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+This property has just a getter, and it returns the
+amount of the candy in gram. For example a package
+Alpenliebe Gold contains 156 gram, so a instance of
+a Alpenliebe class will return 156.
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+PROPERTY amountOfCandy :CandyAmountInGram]]></Declaration>
+      <Get Name="Get" Id="{6f3d5396-403d-48de-8046-40f2a90734f3}">
+        <Declaration><![CDATA[(*
+
+short summary
+=============
+The getter for the candy amount.
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[amountOfCandy := THIS^.amount;
+]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="nameOfCandy" Id="{d1e6e01f-8117-4787-ae54-103d6ef3a55a}" FolderPath="CandyProperties\">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+This property has just a getter, and it returns the
+the name of the concrete candy like Snickers or Alpenliebe.
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+PROPERTY nameOfCandy :CandyName]]></Declaration>
+      <Get Name="Get" Id="{f717cc38-15aa-4158-9964-2a2df77aab08}">
+        <Declaration><![CDATA[(*
+
+short summary
+=============
+Just the getter for the name of the candy.
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[nameOfCandy := THIS^.name;
+]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="typeOfCandy" Id="{51836428-336e-42c5-9962-0f037cae6713}" FolderPath="CandyProperties\">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+This property has just a getter, and it returns the
+type of the candy. The type of the candy is a non-strict
+enumeration because every candy type is represented by one
+bit. For example a snickers is a candy bar, a caramel candy
+and chocolate candy.
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+PROPERTY typeOfCandy :CandyTypes]]></Declaration>
+      <Get Name="Get" Id="{37dd77f5-13f1-45bc-b00f-d4be929ff502}">
+        <Declaration><![CDATA[(*
+
+short summary
+=============
+Just the getter for the type of candy.
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[typeOfCandy := THIS^.candyType;
+]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+  </POU>
+</TcPlcObject>
