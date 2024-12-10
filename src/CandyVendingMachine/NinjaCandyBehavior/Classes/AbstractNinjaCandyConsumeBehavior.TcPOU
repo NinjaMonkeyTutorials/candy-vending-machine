@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="AbstractNinjaCandyConsumeBehavior" Id="{957a5673-7cae-419f-a543-f7572dd03bb9}" SpecialFunc="None">
+    <Declaration><![CDATA[(*
+
+short summary
+=============
+different consumers have a different
+behavior. This class is to decouple
+behavior from the consumer.
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+FUNCTION_BLOCK ABSTRACT AbstractNinjaCandyConsumeBehavior
+VAR
+	(* candy vending machine provider to get a machine to loot *)
+	candyMachineProvider	:REFERENCE TO CandyMachineProvider;
+END_VAR
+VAR_STAT
+	(* default provider *)
+	defaultProvider :NinjaIncCandyMachineProvider(ConsumerTypes.COMMON);
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="calculateSatisfactionLevel" Id="{9df1893a-ee95-4cd6-b14f-731b694da0a1}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+This method calculates the satisfaction level if the consumer
+eates some candies.
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD ABSTRACT calculateSatisfactionLevel
+VAR_INPUT
+	(* taste scale of candy *)
+	tastiness				:TasteScale;
+	(* amount of the candies to eat *)
+	amountOfCandy			:CandyAmountInGram;
+END_VAR
+VAR_IN_OUT
+	(* the satisfaction level of the consumer *)
+	actualSatisfactionLevel	:SatisfactionLevelInPercent;
+END_VAR
+
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="FB_init" Id="{cfa21b27-9732-4d4e-87d2-20be2b0e8429}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+inject the candy vending machine provider
+during declaration.
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD FB_init :BOOL
+VAR_INPUT
+	(* if TRUE, the retain variables are initialized (warm start / cold start) *)
+	bInitRetains		:BOOL;
+	(* if TRUE, the instance afterwards gets moved into the copy code (online change) *)
+	bInCopyCode			:BOOL;
+	(* candy vending machine provider for the consumer *)
+	candyMachineProvider:REFERENCE TO CandyMachineProvider;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF (__ISVALIDREF(candyMachineProvider)) THEN
+	THIS^.candyMachineProvider REF= candyMachineProvider;
+ELSE
+	THIS^.candyMachineProvider REF= THIS^.defaultProvider;
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="lootACandyMachine" Id="{25440b51-e3a9-49e6-9ef8-e62f424435ee}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+this method is for the looting behavior
+of the picky consumer. 
+The picky consumer tries to by delcious candy only.
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD  lootACandyMachine
+VAR_INPUT
+	(* consumer who loots a candy vending machine *)
+	consumer :REFERENCE TO AbstractCandyConsumer;
+	(* preferences of consumer no preference means consumer likes every candy *)
+	preferences	:REFERENCE TO IndividualCandyPreferences REF= 0;
+END_VAR
+VAR
+	(* for-loop counter *)
+	candyToEat		:CandyTypes;
+	(* used candy vending machine *)
+	candyMachine	:REFERENCE TO AbstractCandyMachine;
+	(* the candy to eat *)
+	candy			:REFERENCE TO AbstractCandy;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[RETURN(NOT __ISVALIDREF(consumer));
+candyMachine REF= THIS^.candyMachineProvider.getACandyMachine();
+RETURN(NOT __ISVALIDREF(candyMachine));
+
+FOR candyToEat := CandyTypes.CANDY_BARS TO CandyTypes.SOUR_CANDY BY candyToEat DO
+	IF (__ISVALIDREF(preferences) AND_THEN preferences.howIsTheCandy(candyToEat) <> TasteScale.DELICIOUS) THEN
+		CONTINUE;
+	END_IF
+	candy REF= candyMachine.getNewCandy(candyToEat);
+	IF (__ISVALIDREF(candy)) THEN
+		candy.eatMe(consumer);
+	END_IF
+END_FOR
+]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

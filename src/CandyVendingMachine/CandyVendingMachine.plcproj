@@ -138,6 +138,9 @@
     <Compile Include="CandyMachine\Classes\PickyCandyMachine.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="NinjaCandyBehavior\Classes\AbstractNinjaCandyConsumeBehavior.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="NinjaCandyBehavior\types\Enums\ConsumerTypes.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -172,6 +175,7 @@
     <Folder Include="CandyMachineProvider\Classes" />
     <Folder Include="CandyMachine\Classes" />
     <Folder Include="CandyMachineProvider" />
+    <Folder Include="NinjaCandyBehavior\Classes" />
     <Folder Include="NinjaMonkeys" />
     <Folder Include="NinjaCandyBehavior" />
     <Folder Include="NinjaCandyBehavior\types" />
