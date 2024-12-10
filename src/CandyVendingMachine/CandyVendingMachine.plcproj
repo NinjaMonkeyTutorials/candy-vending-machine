@@ -120,6 +120,9 @@
     <Compile Include="CandyDispatchers\Classes\SourCandyDispatcher.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="CandyMachineProvider\Classes\CandyMachineProvider.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="CandyMachine\Classes\AbstractCandyMachine.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -160,7 +163,9 @@
     <Folder Include="CandyDispatchers" />
     <Folder Include="CandyDispatchers\Classes" />
     <Folder Include="CandyMachine" />
+    <Folder Include="CandyMachineProvider\Classes" />
     <Folder Include="CandyMachine\Classes" />
+    <Folder Include="CandyMachineProvider" />
     <Folder Include="NinjaCandyBehavior" />
     <Folder Include="NinjaCandyBehavior\types" />
     <Folder Include="NinjaCandyBehavior\types\Enums" />

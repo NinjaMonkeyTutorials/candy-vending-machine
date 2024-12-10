@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="CandyMachineProvider" Id="{1bafb802-a204-4656-8924-fb16166b3b37}" SpecialFunc="None">
+    <Declaration><![CDATA[(*
+
+short summary
+=============
+the candy machine provider provides
+candy vending machines for different candy 
+consumers (greedy or picky eaters)
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+FUNCTION_BLOCK ABSTRACT CandyMachineProvider
+VAR
+	(* this for the case that a special candy machine for special consumers is required *)
+	{attribute 'hide'}
+	customCandyMachine	:REFERENCE TO AbstractCandyMachine REF= 0;
+END_VAR
+VAR_STAT
+	(* this is the candy machine for every body *)
+	{attribute 'hide'}
+	defaultCandyMachine :CommonCandyMachine();
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="getACandyMachine" Id="{cf6e92ef-f370-4a9c-93b2-8dc108dfd2df}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+this method provides returns a candy vending machine
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD getACandyMachine :REFERENCE TO AbstractCandyMachine
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF (__ISVALIDREF(THIS^.customCandyMachine)) THEN
+	getACandyMachine REF= THIS^.customCandyMachine;
+ELSE
+	getACandyMachine REF= THIS^.defaultCandyMachine;
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>
