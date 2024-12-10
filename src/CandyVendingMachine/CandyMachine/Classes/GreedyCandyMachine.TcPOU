@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="GreedyCandyMachine" Id="{bead9f4f-d42b-4652-af70-5bcb7fce91b0}" SpecialFunc="None">
+    <Declaration><![CDATA[(*
+
+short summary
+=============
+A candy vending machine for the greedy eaters.
+It tries to provide candies with a high amount. 
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+FUNCTION_BLOCK FINAL GreedyCandyMachine EXTENDS AbstractCandyMachine
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="getNewCandy" Id="{dbf9d515-6309-49ac-975a-42c87c6ee8e6}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+want some, get some
+this method provides the candies
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD  getNewCandy :REFERENCE TO AbstractCandy
+VAR_INPUT
+	(*preferred candy type, it must be a pure candy type *)
+	candyType	:CandyTypes;
+END_VAR
+VAR
+	(* the __NEW operator requires a stricktly typed pointer *)
+	alpenliebe			:POINTER TO Alpenliebe;
+	(* the __NEW operator requires a stricktly typed pointer *)
+	bobsStripes			:POINTER TO BobsSweetStripes;
+	(* the __NEW operator requires a stricktly typed pointer *)
+	candyCorn			:POINTER TO BrachsCandyCorn;
+	(* the __NEW operator requires a stricktly typed pointer *)
+	chupChups			:POINTER TO ChupaChups;
+	(* the __NEW operator requires a stricktly typed pointer *)
+	skittles			:POINTER TO SkittlesSour;
+	(* the __NEW operator requires a stricktly typed pointer *)
+	snickers			:POINTER TO SnickersBar;
+	(* the __NEW operator requires a stricktly typed pointer *)
+	twizzlers			:POINTER TO TwizzlersLicorizeTwists;
+	(* the __NEW operator requires a stricktly typed pointer *)
+	gobstopper			:POINTER TO WonkaGobstopper;
+	(* return value is just a candy *)
+	candy				:POINTER TO AbstractCandy;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[getNewCandy REF= 0;
+RETURN(THIS^.isCandyTypeInvalidForMachine(candyType));
+
+CASE candyType OF
+CandyTypes.CANDY_BARS,
+CandyTypes.CHOCOLATE_CANDY:
+	snickers := __NEW(SnickersBar());
+	candy := snickers;
+CandyTypes.CANDY_CORN:
+	candyCorn := __NEW(BrachsCandyCorn());
+	candy := candyCorn;
+CandyTypes.CANDY_STICKS,
+CandyTypes.MINTS,
+CandyTypes.HARD_CANDY:
+	bobsStripes := __NEW(BobsSweetStripes());
+	candy := bobsStripes;
+CandyTypes.CARAMEL_CANDY:
+	alpenliebe := __NEW(Alpenliebe());
+	candy := alpenliebe;
+CandyTypes.GUMMY_CANDY,
+CandyTypes.LICORICE_CANDY:
+	twizzlers := __NEW(TwizzlersLicorizeTwists());
+	candy := twizzlers;
+CandyTypes.JAWBREAKERS:
+	gobstopper := __NEW(WonkaGobstopper());
+	candy := gobstopper;
+CandyTypes.LOLLIPOPS:;
+	chupChups := __NEW(ChupaChups());
+	candy := chupChups;
+CandyTypes.SOUR_CANDY:;
+	skittles := __NEW(SkittlesSour());
+	candy := skittles;
+ELSE
+	RETURN;
+END_CASE
+
+RETURN(candy <= 0);
+getNewCandy REF= candy^;
+]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

@@ -123,6 +123,12 @@
     <Compile Include="CandyMachine\Classes\AbstractCandyMachine.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="CandyMachine\Classes\CommonCandyMachine.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CandyMachine\Classes\GreedyCandyMachine.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="CandyMachine\Classes\PickyCandyMachine.TcPOU">
       <SubType>Code</SubType>
     </Compile>
