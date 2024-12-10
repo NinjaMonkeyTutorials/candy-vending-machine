@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="PickyNinjaCandyBehavior" Id="{c2e28976-d2f6-4b69-b8c0-748173782bc4}" SpecialFunc="None">
+    <Declaration><![CDATA[(*
+
+short summary
+=============
+the behavior of a picky ninja
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+FUNCTION_BLOCK PickyNinjaCandyBehavior EXTENDS AbstractNinjaCandyConsumeBehavior
+VAR_STAT
+	(* default provider for the pickies*)
+	pickyDefaultProvider :NinjaIncCandyMachineProvider(ConsumerTypes.PICKY);
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="calculateSatisfactionLevel" Id="{d496caa0-91e6-4d98-a65b-da7904dbbf69}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+This method calculates the satisfaction level
+for a candy eating picky consumer.
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD  calculateSatisfactionLevel
+VAR_INPUT
+	(* taste scale of candy *)
+	tastiness				:TasteScale;
+	(* amount of the candies to eat *)
+	amountOfCandy			:CandyAmountInGram;
+END_VAR
+VAR_IN_OUT
+	(* the satisfaction level of the consumer *)
+	actualSatisfactionLevel	:SatisfactionLevelInPercent;
+END_VAR
+VAR
+	(* the greedy consumer likes everything *)
+	pickyScale :DINT;
+END_VAR
+VAR CONSTANT
+	(* maximum possible satisfaction level*)
+	MAX_SATISFACTION 		:SatisfactionLevelInPercent := 100;
+	(* it is a lower limit as it is named *)
+	AVOID_DIVISON_BY_ZERO 	:SatisfactionLevelInPercent := 1;
+	(* factor for the greediness of the consumer *)
+	GREEDINESS				:SatisfactionLevelInPercent := 80;
+	(* for one a candy package the maximum amount *)
+	MAX_AMOUNT				:CandyAmountInGram := 500;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[RETURN(actualSatisfactionLevel >= MAX_SATISFACTION);
+RETURN(tastiness = TasteScale.OKAY);
+pickyScale := tastiness;
+
+{warning disable C0196}
+{warning disable C0197}
+actualSatisfactionLevel := TO_UINT(
+	actualSatisfactionLevel + TO_SINT(
+		LN(
+			TO_REAL(MAX_SATISFACTION)
+			/LIMIT(AVOID_DIVISON_BY_ZERO, actualSatisfactionLevel, MAX_SATISFACTION)
+		) * (
+			TO_REAL(amountOfCandy)
+			/TO_REAL(MAX_AMOUNT)
+		)
+		* (MAX_SATISFACTION - GREEDINESS)
+		* pickyScale
+	)
+);
+{warning restore C0196}
+{warning restore C0197}
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="FB_init" Id="{b3e078e2-f894-43e0-abd9-74df2f24ac84}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+inject the candy vending machine provider
+during declaration.
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD FB_init :BOOL
+VAR_INPUT
+	(* if TRUE, the retain variables are initialized (warm start / cold start) *)
+	bInitRetains		:BOOL;
+	(* if TRUE, the instance afterwards gets moved into the copy code (online change) *)
+	bInCopyCode			:BOOL;
+	(* candy vending machine provider for the consumer *)
+	candyMachineProvider:REFERENCE TO CandyMachineProvider;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF (__ISVALIDREF(candyMachineProvider)) THEN
+	THIS^.candyMachineProvider REF= candyMachineProvider;
+ELSE
+	THIS^.candyMachineProvider REF= THIS^.pickyDefaultProvider;
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

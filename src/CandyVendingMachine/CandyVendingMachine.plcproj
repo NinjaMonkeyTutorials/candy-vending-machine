@@ -144,6 +144,12 @@
     <Compile Include="NinjaCandyBehavior\Classes\CommonNinjaCandyBehavior.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="NinjaCandyBehavior\Classes\GreedyNinjaCandyBehavior.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NinjaCandyBehavior\Classes\PickyNinjaCandyBehavior.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="NinjaCandyBehavior\types\Enums\ConsumerTypes.TcDUT">
       <SubType>Code</SubType>
     </Compile>
