@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="SatisfactionLevelInPercent" Id="{dc2098f1-8f51-4489-89e0-e7a251bd4c7e}">
+    <Declaration><![CDATA[(*
+
+short summary
+=============
+alias for an unit subrange form 0 to 100.
+It is used as satisfaction level for the candy consumer.
+0 means depression
+100 means euphoria
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+TYPE SatisfactionLevelInPercent :
+	UINT(0..100); 
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

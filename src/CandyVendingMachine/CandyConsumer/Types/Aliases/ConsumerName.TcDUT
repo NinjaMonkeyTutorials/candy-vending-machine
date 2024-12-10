@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ConsumerName" Id="{b4980e58-6a42-4b93-baa5-4f84375d0000}">
+    <Declaration><![CDATA[(*
+
+short summary
+=============
+A T_MaxString alias for the consumer name
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+TYPE ConsumerName :
+	Tc2_System.T_MaxString; 
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>
