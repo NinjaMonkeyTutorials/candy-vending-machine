@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="AbstractCandyMachine" Id="{b2addc0b-1a8a-4ee3-a336-48442af0879e}" SpecialFunc="None">
+    <Declaration><![CDATA[(*
+
+short summary
+=============
+candy vending machine it provides
+candies for every taste
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+FUNCTION_BLOCK ABSTRACT AbstractCandyMachine
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="getNewCandy" Id="{6c6a81d7-f31f-436f-8111-f4737128891c}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+this method provides candies.
+Just select your preferred pure candy type
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD ABSTRACT getNewCandy :REFERENCE TO AbstractCandy
+VAR_INPUT
+	(*preferred candy type, it must be a pure candy type *)
+	candyType	:CandyTypes;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="isCandyTypeInvalidForMachine" Id="{140686c9-ea19-42ca-851c-18a83a3c9960}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+helper method to test if the candy type 
+value is in the range and is a power of 2.
+- it returns true if the value is invalid
+- it returns false if value is valid
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD PROTECTED isCandyTypeInvalidForMachine :BOOL
+VAR_INPUT
+	(* candy type value to test *)
+	candyType	:CandyTypes;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[isCandyTypeInvalidForMachine := TRUE;
+RETURN((candyType < CandyTypes.CANDY_BARS) OR (candyType > CandyTypes.SOUR_CANDY));
+RETURN((candyType AND (candyType-1)) <> 0);
+isCandyTypeInvalidForMachine := FALSE;
+]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

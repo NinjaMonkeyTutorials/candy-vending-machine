@@ -111,6 +111,9 @@
     <Compile Include="CandyDispatchers\Classes\SourCandyDispatcher.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="CandyMachine\Classes\AbstractCandyMachine.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Tasks\Main\MAIN.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -132,6 +135,8 @@
     <Folder Include="CandyConsumer\Types\Aliases" />
     <Folder Include="CandyDispatchers" />
     <Folder Include="CandyDispatchers\Classes" />
+    <Folder Include="CandyMachine" />
+    <Folder Include="CandyMachine\Classes" />
     <Folder Include="Tasks" />
     <Folder Include="Tasks\Main" />
   </ItemGroup>
