@@ -138,7 +138,10 @@
     <Compile Include="CandyMachine\Classes\PickyCandyMachine.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Logger\AbstractLogger.TcPOU">
+    <Compile Include="Logger\Classes\AbstractLogger.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Logger\Classes\AdsLogMessage.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="NinjaCandyBehavior\Classes\AbstractNinjaCandyConsumeBehavior.TcPOU">
@@ -194,6 +197,7 @@
     <Folder Include="CandyMachine\Classes" />
     <Folder Include="CandyMachineProvider" />
     <Folder Include="Logger" />
+    <Folder Include="Logger\Classes" />
     <Folder Include="NinjaCandyBehavior\Classes" />
     <Folder Include="NinjaMonkeys" />
     <Folder Include="NinjaCandyBehavior" />

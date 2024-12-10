@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="AdsLogMessage" Id="{495c8aff-0458-467f-ab05-296e6f236fce}" SpecialFunc="None">
+    <Declaration><![CDATA[(*
+
+short summary
+=============
+just a dto to store the logging data for
+the ads logger
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+{attribute 'enable_dynamic_creation'}
+FUNCTION_BLOCK AdsLogMessage
+VAR
+	(* log message content *)
+	msg		:Tc2_System.T_MaxString;
+	(* ADSLOG message type mask *)
+	msgType	:DWORD;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="FB_init" Id="{7fd716a5-7f33-42d0-9e01-5572ec125650}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+initialize the message values
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD FB_init :BOOL
+VAR_INPUT
+	(* if TRUE, the retain variables are initialized (warm start / cold start) *)
+	bInitRetains	:BOOL;
+	(* if TRUE, the instance afterwards gets moved into the copy code (online change) *) 
+	bInCopyCode		:BOOL;
+	(* content of the message *)
+	msg				:Tc2_System.T_MaxString;
+	(* mask of an ADSLOG *)
+	msgType			:DWORD;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.msg := msg;
+THIS^.msgType := msgType;]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="message" Id="{1d62f3b7-e9da-4996-88fa-508230206426}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+property to get the message content
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+PROPERTY message :Tc2_System.T_MaxString]]></Declaration>
+      <Get Name="Get" Id="{c45becd2-7cc5-47b6-9d47-46cf05e70bba}">
+        <Declaration><![CDATA[(*
+
+short summary
+=============
+getter of the property to get the message content
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[message := THIS^.msg;
+]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="messageType" Id="{f92d3db9-e8e5-4d34-8686-31f144cacca1}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+property to get the ads message type mask
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+PROPERTY messageType :DWORD]]></Declaration>
+      <Get Name="Get" Id="{50de1b19-1c8d-488c-adcd-66441c961005}">
+        <Declaration><![CDATA[(*
+
+short summary
+=============
+getter of the property to get the ads message type mask
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[messageType := THIS^.msgType;
+]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+  </POU>
+</TcPlcObject>
