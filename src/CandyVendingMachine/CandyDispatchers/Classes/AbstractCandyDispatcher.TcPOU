@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="AbstractCandyDispatcher" Id="{cf92c720-405e-4a16-8da3-4f3087dae5f9}" SpecialFunc="None">
+    <Declaration><![CDATA[(*
+
+short summary
+=============
+dispatcher to unify the eat<CandyType> method call of the candy consumer.
+It's just annoying to call for every candy types differnt methods.
+It is possible to use the same code to dispatch the candy to the
+consumer. We just delegate it to the right dispatcher.
+Every candy will creacte the required dispatcher dynamicly in the
+class AbstactCandy in the method initializeDispatchers.
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+FUNCTION_BLOCK ABSTRACT AbstractCandyDispatcher
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="destruct" Id="{bcee83a2-4eed-440e-9def-3aeab591d284}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+This method is to free the memory again 
+if the dispatcher was created dynamicly.
+It's easier to provide this method than
+to __querypointer until it matches.
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD destruct :POINTER TO AbstractCandyDispatcher
+VAR_INPUT
+END_VAR
+VAR CONSTANT
+	(* just null pointer as return value *)
+	NULL :__XWORD := 0;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[destruct := THIS;
+IF (
+	Tc2_System.F_CheckMemoryArea(pData := THIS, nSize := SIZEOF(THIS^))
+	= Tc2_System.E_TcMemoryArea.Dynamic
+) THEN
+	__DELETE(destruct);
+	destruct := NULL;
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="eat" Id="{a9106c50-9a67-4cd2-abfc-5a1c24fe14cc}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+this is the method to unify the
+counsumers eat what erver calls 
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD ABSTRACT eat
+VAR_INPUT
+	(* consumer who eats the candy *)
+	consumer	:REFERENCE TO AbstractCandyConsumer;
+	(* candy amount in gram *)
+	amount		:CandyAmountInGram;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="eatCandiesIsImpossible" Id="{9a088316-69bb-4fa6-83fb-3db8a4b15a0d}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+just a helper to test the parameters
+- it returns true if minimum one of the parameters is invalid
+- it retruns false if all parameters are valid
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD PROTECTED eatCandiesIsImpossible :BOOL
+VAR_INPUT
+	(* consumer who eats the candy *)
+	consumer	:REFERENCE TO AbstractCandyConsumer;
+	(* candy amount in gram *)
+	amount		:CandyAmountInGram;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[eatCandiesIsImpossible := TRUE;
+RETURN(NOT __ISVALIDREF(consumer));
+RETURN(amount <= 0);
+eatCandiesIsImpossible := FALSE;
+]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

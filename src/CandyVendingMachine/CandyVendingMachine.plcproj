@@ -42,6 +42,9 @@
     <Compile Include="CandyConsumer\Types\Aliases\SatisfactionLevelInPercent.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="CandyDispatchers\Classes\AbstractCandyDispatcher.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Tasks\Main\MAIN.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -61,6 +64,8 @@
     <Folder Include="CandyConsumer\Classes" />
     <Folder Include="CandyConsumer\Types" />
     <Folder Include="CandyConsumer\Types\Aliases" />
+    <Folder Include="CandyDispatchers" />
+    <Folder Include="CandyDispatchers\Classes" />
     <Folder Include="Tasks" />
     <Folder Include="Tasks\Main" />
   </ItemGroup>
