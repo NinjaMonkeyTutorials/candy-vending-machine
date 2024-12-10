@@ -1,0 +1,275 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="AnyToTArgConverter" Id="{148460d9-71fe-4934-87f2-18a19cc7518e}" SpecialFunc="None">
+    <Declaration><![CDATA[(*
+
+short summary
+=============
+This abstract class provides a converter
+form ANY type to the type Tc2_Utilities.T_Arg
+Simply inherit from the class, then you can use the AnyToArg method.
+This is much more convenient than the Tc2_Utilities.F_BYTE,
+Tc2_Utilities.F_WORD etc. functions provided by Beckhoff.
+The AnyToArg method is protected so it will not mess up your function block interface. 
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+FUNCTION_BLOCK ABSTRACT AnyToTArgConverter
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Folder Name="private" Id="{34801434-5dc6-4641-9add-a46c6ade12fe}" />
+    <Method Name="anyToArg" Id="{a16c4792-41f0-4f84-8cf2-ddee34526c7d}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+This method takes an ANY type as input
+parameter and returns a Tc2_Utilities.T_Arg of it.
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+METHOD PROTECTED FINAL anyToArg :Tc2_Utilities.T_Arg
+VAR_INPUT
+	(* just the data which shoud be casted to ``Tc2_Utilities.T_Arg`` *)
+	in	:ANY;
+END_VAR
+VAR
+	(* just to store the ``ANY`` without changes *)
+	data	:__SYSTEM.AnyType;	
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[data.diSize := in.diSize;
+data.pValue := in.pValue;
+data.TypeClass := in.TypeClass;
+THIS^.dereferenceAnys(in := data, out => data);
+anyToArg := THIS^.anyTypeToArg(data);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="anyTypeToArg" Id="{b62c2439-95c8-4b41-a0b5-874508b595ec}" FolderPath="private\">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+This method takes a __SYSTEM.AnyType type and returns a Tc2_Utilities.T_Arg of it.
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+METHOD PRIVATE anyTypeToArg :Tc2_Utilities.T_Arg
+VAR_INPUT
+	(* __SYSTEM.AnyType which should be converted to Tc2_Utilities.T_Arg *)
+	in :__SYSTEM.AnyType;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[anyTypeToArg.cbLen := TO_UDINT(in.diSize);
+anyTypeToArg.pData := in.pValue;
+anyTypeToArg.eType := THIS^.typeClassToArgType(in.TypeClass, anyTypeToArg.cbLen);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="dereferenceAnys" Id="{e376c7eb-2976-44c2-ab30-b669a36e1097}" FolderPath="private\">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+This method is used to derference ANY types
+until it find a non ANY type. The method is recursive.  
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+{attribute 'estimated-stack-usage' := '280'}
+METHOD PRIVATE dereferenceAnys
+VAR_INPUT
+	(* __SYSTEM.AnyType to dereference *)
+	in :__SYSTEM.AnyType;
+END_VAR
+VAR_OUTPUT
+	(* dereferenced __SYSTEM.AnyType *)
+	out :__SYSTEM.AnyType;	
+END_VAR
+VAR
+	(* pointer to get the next address *)
+	p :POINTER TO __SYSTEM.AnyType;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE in.TypeClass OF
+__SYSTEM.TYPE_CLASS.TYPE_ANY,  
+__SYSTEM.TYPE_CLASS.TYPE_ANYBIT, 
+__SYSTEM.TYPE_CLASS.TYPE_ANYDATE,
+__SYSTEM.TYPE_CLASS.TYPE_ANYINT,
+__SYSTEM.TYPE_CLASS.TYPE_ANYNUM,
+__SYSTEM.TYPE_CLASS.TYPE_ANYREAL:
+	p := in.pValue;
+	p := p^.pValue;
+	THIS^.dereferenceAnys(p^, out => out);
+ELSE
+	out := in;
+END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="typeClassToArgType" Id="{1c5572c6-da61-47bd-9668-e57d7edd1615}" FolderPath="private\">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+This method translates the __SYSTEM.TYPE_CLASS form __SYSTEM.AnyType 
+to Tc2_Utilities.E_ArgType from Tc2_Utilities.T_Arg
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+METHOD PRIVATE typeClassToArgType :Tc2_Utilities.E_ArgType
+VAR_INPUT
+	(* type class to translate *)
+	typeClass :__SYSTEM.TYPE_CLASS;
+	(* size to determine the base type *)
+	size :UDINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE typeClass OF
+__SYSTEM.TYPE_CLASS.TYPE_BOOL,
+__SYSTEM.TYPE_CLASS.TYPE_BYTE,
+__SYSTEM.TYPE_CLASS.TYPE_BIT,
+__SYSTEM.TYPE_CLASS.TYPE_BITCONST:
+	typeClassToArgType := Tc2_Utilities.E_ArgType.ARGTYPE_BYTE;
+__SYSTEM.TYPE_CLASS.TYPE_WORD:
+	typeClassToArgType := Tc2_Utilities.E_ArgType.ARGTYPE_WORD;
+__SYSTEM.TYPE_CLASS.TYPE_DWORD:
+	typeClassToArgType := Tc2_Utilities.E_ArgType.ARGTYPE_DWORD;
+__SYSTEM.TYPE_CLASS.TYPE_LWORD:
+	typeClassToArgType := Tc2_Utilities.E_ArgType.ARGTYPE_LWORD;
+__SYSTEM.TYPE_CLASS.TYPE_USINT:
+	typeClassToArgType := Tc2_Utilities.E_ArgType.ARGTYPE_USINT;
+__SYSTEM.TYPE_CLASS.TYPE_SINT:
+	typeClassToArgType := Tc2_Utilities.E_ArgType.ARGTYPE_SINT;
+__SYSTEM.TYPE_CLASS.TYPE_UINT:
+	typeClassToArgType := Tc2_Utilities.E_ArgType.ARGTYPE_UINT;
+__SYSTEM.TYPE_CLASS.TYPE_INT:
+	typeClassToArgType := Tc2_Utilities.E_ArgType.ARGTYPE_INT;
+__SYSTEM.TYPE_CLASS.TYPE_UDINT, __SYSTEM.TYPE_CLASS.TYPE_TIME,
+__SYSTEM.TYPE_CLASS.TYPE_DATE, __SYSTEM.TYPE_CLASS.TYPE_DATEANDTIME,
+__SYSTEM.TYPE_CLASS.TYPE_TIMEOFDAY:
+	typeClassToArgType := Tc2_Utilities.E_ArgType.ARGTYPE_UDINT;
+__SYSTEM.TYPE_CLASS.TYPE_DINT:
+	typeClassToArgType := Tc2_Utilities.E_ArgType.ARGTYPE_DINT;
+__SYSTEM.TYPE_CLASS.TYPE_ULINT, __SYSTEM.TYPE_CLASS.TYPE_LTIME,
+__SYSTEM.TYPE_CLASS.TYPE_LDATE, __SYSTEM.TYPE_CLASS.TYPE_LDATEANDTIME,
+__SYSTEM.TYPE_CLASS.TYPE_LTIMEOFDAY:
+		typeClassToArgType := Tc2_Utilities.E_ArgType.ARGTYPE_ULARGE;
+__SYSTEM.TYPE_CLASS.TYPE_LINT:
+	typeClassToArgType := Tc2_Utilities.E_ArgType.ARGTYPE_LARGE;
+__SYSTEM.TYPE_CLASS.TYPE_XINT:
+	typeClassToArgType := SEL(
+		(SIZEOF(__XINT) = SIZEOF(LINT)),
+		Tc2_Utilities.E_ArgType.ARGTYPE_DWORD,
+		Tc2_Utilities.E_ArgType.ARGTYPE_LWORD
+	);
+__SYSTEM.TYPE_CLASS.TYPE_UXINT, __SYSTEM.TYPE_CLASS.TYPE_XWORD,
+__SYSTEM.TYPE_CLASS.TYPE_POINTER, __SYSTEM.TYPE_CLASS.TYPE_REFERENCE:
+	typeClassToArgType := SEL(
+		(SIZEOF(__XWORD) = SIZEOF(LWORD)),
+		Tc2_Utilities.E_ArgType.ARGTYPE_DWORD,
+		Tc2_Utilities.E_ArgType.ARGTYPE_LWORD
+	);	
+__SYSTEM.TYPE_CLASS.TYPE_REAL:
+	typeClassToArgType := Tc2_Utilities.E_ArgType.ARGTYPE_REAL;
+__SYSTEM.TYPE_CLASS.TYPE_LREAL:
+	typeClassToArgType := Tc2_Utilities.E_ArgType.ARGTYPE_LREAL;
+__SYSTEM.TYPE_CLASS.TYPE_STRING:
+	typeClassToArgType := SEL(
+		(size <= SIZEOF(T_MaxString)),
+		Tc2_Utilities.E_ArgType.ARGTYPE_BIGTYPE,
+		Tc2_Utilities.E_ArgType.ARGTYPE_STRING
+	);
+__SYSTEM.TYPE_CLASS.TYPE_XSTRING:
+{IF defined (NO_UNICODE_SUPPORT)}
+	typeClassToArgType := SEL(
+		(size <= SIZEOF(T_MaxString)),
+		Tc2_Utilities.E_ArgType.ARGTYPE_BIGTYPE,
+		Tc2_Utilities.E_ArgType.ARGTYPE_STRING
+	);
+{ELSE}
+	typeClassToArgType := ARGTYPE_BIGTYPE;
+{END_IF}
+__SYSTEM.TYPE_CLASS.TYPE_WSTRING, __SYSTEM.TYPE_CLASS.TYPE_VARLENARRAY,
+__SYSTEM.TYPE_CLASS.TYPE_USERDEF, __SYSTEM.TYPE_CLASS.TYPE_ARRAY,
+__SYSTEM.TYPE_CLASS.TYPE_VECTOR:
+	typeClassToArgType := ARGTYPE_BIGTYPE;	
+__SYSTEM.TYPE_CLASS.TYPE_SUBRANGE, __SYSTEM.TYPE_CLASS.TYPE_ENUM:
+	typeClassToArgType := MUX(
+		size,
+		(* size is 0 bytes *)
+		Tc2_Utilities.E_ArgType.ARGTYPE_UNKNOWN,
+		(* size is 1 bytes *)
+		Tc2_Utilities.E_ArgType.ARGTYPE_SINT,
+		(* size is 2 bytes *)
+		Tc2_Utilities.E_ArgType.ARGTYPE_INT,
+		(* size is 3 bytes *)
+		Tc2_Utilities.E_ArgType.ARGTYPE_UNKNOWN,
+		(* size is 4 bytes *)
+		Tc2_Utilities.E_ArgType.ARGTYPE_DINT,
+		(* size is 5 bytes *)
+		Tc2_Utilities.E_ArgType.ARGTYPE_UNKNOWN,
+		(* size is 6 bytes *)
+		Tc2_Utilities.E_ArgType.ARGTYPE_UNKNOWN,
+		(* size is 7 bytes *)
+		Tc2_Utilities.E_ArgType.ARGTYPE_UNKNOWN,
+		(* size is 8 bytes *)
+		Tc2_Utilities.E_ArgType.ARGTYPE_ULARGE,
+		(* size is more than 8 bytes *)
+		Tc2_Utilities.E_ArgType.ARGTYPE_BIGTYPE
+	);
+__SYSTEM.TYPE_CLASS.TYPE_LAZY,
+__SYSTEM.TYPE_CLASS.TYPE_NONE,
+__SYSTEM.TYPE_CLASS.TYPE_PARAMS:
+	typeClassToArgType := Tc2_Utilities.E_ArgType.ARGTYPE_UNKNOWN;
+ELSE
+	typeClassToArgType := Tc2_Utilities.E_ArgType.ARGTYPE_UNKNOWN;
+END_CASE
+]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

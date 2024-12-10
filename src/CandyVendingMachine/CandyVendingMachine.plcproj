@@ -18,6 +18,9 @@
     <LibraryReferences>{98f74002-7296-4d11-a9a7-63ec90ca979e}</LibraryReferences>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AnyToArg\Classes\AnyToTArgConverter.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Tasks\Main\MAIN.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -26,6 +29,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="AnyToArg" />
+    <Folder Include="AnyToArg\Classes" />
     <Folder Include="Tasks" />
     <Folder Include="Tasks\Main" />
   </ItemGroup>
