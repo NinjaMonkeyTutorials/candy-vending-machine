@@ -20,6 +20,8 @@ For details check: Apache-2.0_
 
 PROGRAM MAIN
 VAR
+	(* to print the log messages with the run method of the logger *)
+	loggingProvider :LoggerProvider(0);
 	(* behavior for a greedy candy consuming ninja *)
 	greedy				:GreedyNinjaCandyBehavior(0);
 	(* behavior for a picky candy consuming ninja *)
@@ -39,7 +41,7 @@ END_VAR
     <Implementation>
       <ST><![CDATA[ajnin.lootCandies(feedAjnin);
 yeknom.lootCandies(feedYeknom);
-]]></ST>
+loggingProvider.logger.run();]]></ST>
     </Implementation>
   </POU>
 </TcPlcObject>

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4026.11">
-	<Project ProjectGUID="{75363119-13C3-4D2B-A3C8-63F87A4EFB2B}" TargetNetId="93.24.229.6.1.1" Target64Bit="true" ShowHideConfigurations="#x6">
+	<Project ProjectGUID="{75363119-13C3-4D2B-A3C8-63F87A4EFB2B}" TargetNetId="172.26.101.245.1.1" Target64Bit="true" ShowHideConfigurations="#x6">
 		<System>
 			<Settings MaxStackSize="4096"/>
 			<Tasks>
@@ -11,7 +11,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{7E693ABB-5DD3-43A8-8264-986995312A86}" Name="CandyVendingMachine" PrjFilePath="CandyVendingMachine\CandyVendingMachine.plcproj" TmcFilePath="CandyVendingMachine\CandyVendingMachine.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{3A955CC3-9238-977A-CE63-E06C396CAB7B}" TmcPath="CandyVendingMachine\CandyVendingMachine.tmc">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{04DE9FAE-B215-FC32-B631-3544935546C8}" TmcPath="CandyVendingMachine\CandyVendingMachine.tmc">
 					<Name>CandyVendingMachine Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Contexts>
