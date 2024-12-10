@@ -33,6 +33,9 @@
     <Compile Include="Candies\Types\Enums\CandyTypes.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="CandyConsumer\Classes\AbstractCandyConsumer.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="CandyConsumer\Types\Aliases\ConsumerName.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -55,6 +58,7 @@
     <Folder Include="Candies\Types\Aliases" />
     <Folder Include="Candies\Types\Enums" />
     <Folder Include="CandyConsumer" />
+    <Folder Include="CandyConsumer\Classes" />
     <Folder Include="CandyConsumer\Types" />
     <Folder Include="CandyConsumer\Types\Aliases" />
     <Folder Include="Tasks" />

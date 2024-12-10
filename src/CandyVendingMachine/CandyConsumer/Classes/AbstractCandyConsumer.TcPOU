@@ -1,0 +1,446 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="AbstractCandyConsumer" Id="{fbb9104f-5baa-4edd-b51e-cd404b7ed71c}" SpecialFunc="None">
+    <Declaration><![CDATA[(*
+
+short summary
+=============
+A candy consumer. It can eat candies and the
+candies will effect the satisfaction of the consumer.  
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+FUNCTION_BLOCK ABSTRACT AbstractCandyConsumer
+VAR
+	(* the satisfaction level of the consumer in % *)
+	satisfaction :SatisfactionLevelInPercent;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Folder Name="eatCandies" Id="{bf0f6a9d-574a-4a6b-8606-0eb0ebe80327}" />
+    <Method Name="eatCandyBars" Id="{b0dbbdfb-3cff-44d5-acab-99f0786d05ce}" FolderPath="eatCandies\">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+method to eat candy bars
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD ABSTRACT eatCandyBars
+VAR_INPUT
+	(* amount of candy that the consumer eats in gram *)
+	amount	:CandyAmountInGram;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="eatCandyCorn" Id="{15fe0b68-cfd2-4ce8-ae4b-41b84d77b3a4}" FolderPath="eatCandies\">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+method to eat candy corn
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD ABSTRACT eatCandyCorn
+VAR_INPUT
+	(* amount of candy that the consumer eats in gram *)
+	amount	:CandyAmountInGram;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="eatCandySticks" Id="{68da366e-b3cc-4c21-b5ec-6d459e3d5580}" FolderPath="eatCandies\">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+method to eat candy sticks
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD ABSTRACT eatCandySticks
+VAR_INPUT
+	(* amount of candy that the consumer eats in gram *)
+	amount	:CandyAmountInGram;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="eatCaramelCandy" Id="{1a83a930-b575-4a9e-b23e-064f4e06337f}" FolderPath="eatCandies\">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+method to eat caramel candy
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD ABSTRACT eatCaramelCandy
+VAR_INPUT
+	(* amount of candy that the consumer eats in gram *)
+	amount	:CandyAmountInGram;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="eatChoclateCandy" Id="{aed18f5d-389c-461a-a7b5-0b314743dabf}" FolderPath="eatCandies\">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+method to eat choclate candy
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD ABSTRACT eatChoclateCandy
+VAR_INPUT
+	(* amount of candy that the consumer eats in gram *)
+	amount	:CandyAmountInGram;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="eatGummyCandy" Id="{89ca7276-3035-40d5-92cf-ab72807e54aa}" FolderPath="eatCandies\">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+method to eat gummy candy
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD ABSTRACT eatGummyCandy
+VAR_INPUT
+	(* amount of candy that the consumer eats in gram *)
+	amount	:CandyAmountInGram;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="eatHardCandy" Id="{6c42e848-c798-4be3-9130-2bcb7235754d}" FolderPath="eatCandies\">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+method to eat hard candy
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD ABSTRACT eatHardCandy
+VAR_INPUT
+	(* amount of candy that the consumer eats in gram *)
+	amount	:CandyAmountInGram;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="eatJawbreakers" Id="{050bc57d-1a14-4b24-9f4e-f20d9219d066}" FolderPath="eatCandies\">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+method to eat jawbreakers
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD ABSTRACT eatJawbreakers
+VAR_INPUT
+	(* amount of candy that the consumer eats in gram *)
+	amount	:CandyAmountInGram;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="eatLicoriceCandy" Id="{1290a540-52b6-4fb8-bab8-6b3b1f394b13}" FolderPath="eatCandies\">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+method to eat licorice candy
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD ABSTRACT eatLicoriceCandy
+VAR_INPUT
+	(* amount of candy that the consumer eats in gram *)
+	amount	:CandyAmountInGram;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="eatLollipops" Id="{993b7e18-9abd-4352-a44f-714cb1fe9a52}" FolderPath="eatCandies\">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+method to eat lollipops
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD ABSTRACT eatLollipops
+VAR_INPUT
+	(* amount of candy that the consumer eats in gram *)
+	amount	:CandyAmountInGram;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="eatMints" Id="{84810e68-e67f-4b36-9dd6-50d53121b0a9}" FolderPath="eatCandies\">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+method to eat mints
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD ABSTRACT eatMints
+VAR_INPUT
+	(* amount of candy that the consumer eats in gram *)
+	amount	:CandyAmountInGram;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="eatSourCandy" Id="{55775da8-6f4e-481b-bee6-50dbb9ee9504}" FolderPath="eatCandies\">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+method to eat sour candy
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD ABSTRACT eatSourCandy
+VAR_INPUT
+	(* amount of candy that the consumer eats in gram *)
+	amount	:CandyAmountInGram;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="levelOfSatisfaction" Id="{a8c73a87-6b4c-4a77-8758-25e5deb3032b}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+The actual satisfaction level of the consumer
+in percent 0% means depression 100% means euphoria
+The consumer has just a getter for the satisfaction level
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+PROPERTY levelOfSatisfaction :SatisfactionLevelInPercent]]></Declaration>
+      <Get Name="Get" Id="{7f0827b8-b008-4c1a-a359-e58b24c953a4}">
+        <Declaration><![CDATA[(*
+
+short summary
+=============
+Getter for the actual satisfaction level of the consumer
+in percent 0% means depression 100% means euphoria.
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[levelOfSatisfaction := THIS^.satisfaction;
+]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="name" Id="{eff12d01-969d-49c6-8215-e2df253bee3d}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+name of the consumer
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+PROPERTY ABSTRACT name :ConsumerName]]></Declaration>
+      <Get Name="Get" Id="{b3b330d6-29b5-4d39-bf44-7cbe85fa5ac3}">
+        <Declaration><![CDATA[(*
+
+short summary
+=============
+getter for the name of the consumer
+for logging purpose
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+  </POU>
+</TcPlcObject>
