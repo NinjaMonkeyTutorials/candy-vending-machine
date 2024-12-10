@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="TasteScale" Id="{5d80a9a8-c6a0-4b15-993c-490768d2806b}">
+    <Declaration><![CDATA[(*
+
+short summary
+=============
+This is enumeration is used as factor
+to calculate the satisfaction level of the consumer.
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+{attribute 'qualified_only'}
+{attribute 'strict'}
+{attribute 'to_string'}
+TYPE TasteScale :
+(
+	(* decreases maybe consumers statisfaction level *)
+	DISGUSTING := -1,
+	(* has maybe no effect on the consumers statisfaction level *)
+	OKAY := 0,
+	(* increases maybe consumers statisfaction level *)
+	DELICIOUS := 1
+)DINT := OKAY;
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

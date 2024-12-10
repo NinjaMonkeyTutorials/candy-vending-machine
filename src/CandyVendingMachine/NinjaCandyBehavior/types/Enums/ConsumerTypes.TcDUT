@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ConsumerTypes" Id="{9a3e3a02-ae41-4917-a028-0d9b1446c7e3}">
+    <Declaration><![CDATA[(*
+
+short summary
+=============
+The world is full of different consumer types
+but we've only defined two of it.
+The greedy consumer (more is better)
+The picky consumer (it's only worth it if it's good)
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+{attribute 'qualified_only'}
+{attribute 'strict'}
+{attribute 'to_string'}
+TYPE ConsumerTypes :
+(
+	(* common neither picky nor greedy *)
+	COMMON := 0,
+	(* cookie monster style *)
+	GREEDY,
+	(* finicky style *)
+	PICKY
+)UDINT;
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>
