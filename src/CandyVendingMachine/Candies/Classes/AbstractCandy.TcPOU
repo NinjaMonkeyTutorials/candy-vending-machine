@@ -6,6 +6,11 @@
 short summary
 =============
 This class is an abstraction layer for candies.
+Every candy must inherit from it.
+Every candy must have the attribute pragma call after init
+because it's impossible to create the dispatchers in FB_init.
+If a concrete candy was created dynamically then it's necessary
+to call the method initializeDispatchers once. 
 
 legal notes
 ===========
@@ -16,7 +21,7 @@ For details check: Apache-2.0_
 .. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
 
 *)
-
+{attribute 'call_after_init'}
 FUNCTION_BLOCK ABSTRACT AbstractCandy EXTENDS AnyToTArgConverter
 VAR
 	(* common candy type for example caramel candy *)
@@ -25,12 +30,78 @@ VAR
 	name			:CandyName;
 	(* amount of the candy in gram because we use the metric system *)
 	amount			:CandyAmountInGram;
+	(* array of dispatchers to dispatch a common candy type to a consumer *)
+	{attribute 'no_copy'}
+	dispatcher		:POINTER TO POINTER TO AbstractCandyDispatcher;
+	(* factory to create the dispatchers dynamically *)
+	{attribute 'hide'}
+	dispatcherFactory :CandyDispatcherFactory();
+	(*
+	number common candy types of the concrete candy.
+	For example a snickers is a candy bar, a chocolate candy and a caramel candy, 
+	in this example the numberOfTypes is three
+	*)
+	numberOfTypes	:USINT;
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>
     </Implementation>
     <Folder Name="CandyProperties" Id="{dd3b08fb-149a-473f-b3f1-3a22f7180838}" />
+    <Folder Name="log" Id="{b30500ac-daec-46f7-9143-a3db7fbb0371}" />
+    <Method Name="addNewDispatcher" Id="{635f18de-6fec-419a-bff9-02af9d5e118b}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+This method adds a dispatcher for a specific candy type
+to the the concrete candy. It's possible that a concrete
+candy has more than one specific candy type. For example a 
+snickers is a candy bar, a caramel candy and chocolate candy.
+Since the consumer has for every candy type a extra method
+to call, the class AbtractCandy use dispatchers classes
+to simplify it. The dispatcher is a pointer to pointer to
+make it iterable because it's impossible do it with an
+array of references to AbstractCandyDispatcher.
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+METHOD PRIVATE addNewDispatcher
+VAR_INPUT
+	(* candy type to add a new dispatcher for it *)
+	candyType	:CandyTypes;
+END_VAR
+VAR
+	(* pointer to an abstract dispatcher to store it in the array (pointer to pointer) *)
+	dispatcher	:POINTER TO AbstractCandyDispatcher;
+	(* array for the abstract dispatchers *)
+	dispatchers	:POINTER TO __XWORD;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[dispatcher := THIS^.dispatcherFactory.getNewCandyDispatcherFor(candyType);
+RETURN (dispatcher <= 0);
+dispatchers := __NEW(__XWORD, (THIS^.numberOfTypes + 1));
+IF (THIS^.dispatcher > 0) THEN
+	Tc2_System.MEMCPY(
+		destAddr := dispatchers,
+		srcAddr := THIS^.dispatcher,
+		n := (SIZEOF(__XWORD)*THIS^.numberOfTypes)
+	);
+	__DELETE(THIS^.dispatcher);
+END_IF
+dispatchers[THIS^.numberOfTypes] := dispatcher;
+THIS^.numberOfTypes := (THIS^.numberOfTypes + 1);
+THIS^.dispatcher := dispatchers;
+]]></ST>
+      </Implementation>
+    </Method>
     <Property Name="amountOfCandy" Id="{4a91ad3a-a182-4c0c-bb51-35ed6f4a2bf3}" FolderPath="CandyProperties\">
       <Declaration><![CDATA[(*
 
@@ -50,7 +121,7 @@ For details check: Apache-2.0_
 .. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
 
 *)
-PROPERTY amountOfCandy :CandyAmountInGram]]></Declaration>
+PROPERTY amountOfCandy : CandyAmountInGram]]></Declaration>
       <Get Name="Get" Id="{6f3d5396-403d-48de-8046-40f2a90734f3}">
         <Declaration><![CDATA[(*
 
@@ -76,6 +147,252 @@ END_VAR
         </Implementation>
       </Get>
     </Property>
+    <Method Name="destruct" Id="{a9f59331-9cf0-4a4d-961c-f5e272e1d738}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+This method is to free the memory of an abstract candy again
+if the candy was dynamically created. The method has no effect
+if the candy was not dynamically created. It returns a null pointer
+if it free the memory and a pointer to it self if it didn't free
+memory. The method simplify the destruction of a candy object
+because it is no query pointer neccessary.
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+METHOD PROTECTED destruct :POINTER TO AbstractCandy
+VAR CONSTANT
+	(* value of a null pointer *)
+	NULL :__XWORD := 0;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[destruct := THIS;
+IF (
+	Tc2_System.F_CheckMemoryArea(pData := THIS, nSize := SIZEOF(THIS^))
+	= Tc2_System.E_TcMemoryArea.Dynamic
+) THEN
+	__DELETE(destruct);
+	destruct := NULL;
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="eatMe" Id="{513f4091-7b17-476a-a62b-104efc58ae99}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+this method calls the eat<CandyType> methods of
+the candy consumer and it destruct the candy object.
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD eatMe :POINTER TO AbstractCandy
+VAR_INPUT
+	(* candy consumer who eats the candy *)
+	consumer :REFERENCE TO AbstractCandyConsumer;
+END_VAR
+VAR
+	i	:USINT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[eatMe := THIS;
+RETURN(NOT __ISVALIDREF(consumer));
+RETURN(THIS^.numberOfTypes <= 0);
+
+FOR i:= 0 TO (THIS^.numberOfTypes-1) DO
+	THIS^.dispatcher[i]^.eat(consumer, (THIS^.amount / THIS^.numberOfTypes));
+END_FOR
+
+THIS^.logCandyConsume(consumer);
+eatMe := THIS^.destruct();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="FB_exit" Id="{e57434e6-905d-4fb4-850b-2c85f0e8496e}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+frees the memory of the candy dispatcher again.
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD FB_exit : BOOL
+VAR_INPUT
+	(* if TRUE, the exit method is called for exiting an instance that is copied afterwards (online change). *)
+	bInCopyCode : BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.freeDispatchers();
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="freeDispatchers" Id="{1dbcf5f5-9429-4dda-909a-ca57d99be4c9}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+destruc the dynamicly created dispatcher to
+free the memory again.
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD PRIVATE freeDispatchers
+VAR_INPUT
+END_VAR
+VAR
+	(* counter vairable for the for-loop *)
+	currentDispatcher :USINT;
+	(* memory was allocated as __XWORD so a __XWORD pointer is required to free it again *)
+	dispatchers	:POINTER TO __XWORD;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[RETURN(THIS^.numberOfTypes <= 0);
+RETURN(THIS^.dispatcher <= 0);
+FOR currentDispatcher := 0 TO THIS^.numberOfTypes-1 DO
+	THIS^.dispatcher[currentDispatcher]^.destruct();
+END_FOR
+THIS^.numberOfTypes := 0;
+dispatchers := THIS^.dispatcher;
+__DELETE(dispatchers);
+THIS^.dispatcher := 0;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="initializeDispatchers" Id="{8f12f47f-32c5-4ee7-be3f-f732f997dada}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+creates the dispatcher dynamicly for the candy.
+It is not possible to do this in FB_init because
+of the order (base class first)
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+{attribute 'call_after_init'}
+METHOD initializeDispatchers
+VAR_INPUT
+END_VAR
+VAR
+	(* counter variable for binary counting in a for-loop *)
+	currentType	:CandyTypes;
+	(* binary candy types from FB_init *)
+	myCandyType :CandyTypes := THIS^.candyType;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.freeDispatchers();
+RETURN(myCandyType <= 0);
+FOR currentType := CandyTypes.CANDY_BARS TO CandyTypes.SOUR_CANDY BY currentType DO
+	IF ((myCandyType AND currentType) > 0) THEN
+		THIS^.addNewDispatcher(currentType);
+		myCandyType := myCandyType XOR currentType;
+		RETURN(myCandyType = 0);
+	END_IF
+END_FOR
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="logCandyConsume" Id="{9849541d-6048-4f17-95ac-a01326294f71}" FolderPath="log\">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+This message writes a ads log message if a consumer
+was eating a concrete candy instance. The message
+contains the consumer name, the amount, and the satisfaction
+level of the consumer after the consume.
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+METHOD PROTECTED logCandyConsume
+VAR_INPUT
+	(* consumer who ate the candy *)
+	consumer :REFERENCE TO AbstractCandyConsumer;
+END_VAR
+VAR
+	(* format string because it's easier as the concatenation hell *)
+	stringFromatter	:Tc2_Utilities.FB_FormatString;
+	(* consumer name because we need a variable and not a property for the format string *)
+	consumerName	:ConsumerName;
+	(*
+	satisfaction level of the consumer
+	because we need a variable and not a property for the format string 
+	*)
+	statisfaction	:SatisfactionLevelInPercent;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[statisfaction := consumer.levelOfSatisfaction;
+consumerName := consumer.name;
+stringFromatter(
+	sFormat := '%s was eating %d grams %s the satisfaction level of %s is now %d %%',
+	arg1 := THIS^.anyToArg(consumerName),
+	arg2 := THIS^.anyToArg(THIS^.amount),
+	arg3 := THIS^.anyToArg(THIS^.name),
+	arg4 := THIS^.anyToArg(consumerName),
+	arg5 := THIS^.anyToArg(statisfaction),
+);
+
+Tc2_System.ADSLOGSTR(
+	msgCtrlMask := Tc2_System.ADSLOG_MSGTYPE_HINT,
+	msgFmtStr := '%s',
+	strArg := stringFromatter.sOut
+);
+]]></ST>
+      </Implementation>
+    </Method>
     <Property Name="nameOfCandy" Id="{d1e6e01f-8117-4787-ae54-103d6ef3a55a}" FolderPath="CandyProperties\">
       <Declaration><![CDATA[(*
 
@@ -93,7 +410,7 @@ For details check: Apache-2.0_
 .. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
 
 *)
-PROPERTY nameOfCandy :CandyName]]></Declaration>
+PROPERTY nameOfCandy : CandyName]]></Declaration>
       <Get Name="Get" Id="{f717cc38-15aa-4158-9964-2a2df77aab08}">
         <Declaration><![CDATA[(*
 
