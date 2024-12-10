@@ -1,0 +1,576 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="NinjaMonkey" Id="{17693fd9-e590-418e-828c-b712caa050c0}" SpecialFunc="None">
+    <Declaration><![CDATA[(*
+
+short summary
+=============
+A ninja candy consumer. It can eat candies and the
+candies will effect the satisfaction of the consumer.
+Since ninjas a heterogeneous crowd is it necessary to inject
+the ninjas behavior.
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+{attribute 'reflection'}
+FUNCTION_BLOCK FINAL NinjaMonkey EXTENDS AbstractCandyConsumer
+VAR
+	(* the candy consume behavior of the ninja instance *) 
+	candyBehavior				:REFERENCE TO AbstractNinjaCandyConsumeBehavior;
+	(* candy preferences of the ninja *)
+	candyPreferences			:REFERENCE TO IndividualCandyPreferences;
+	(* ninjas name is the instance path without the project nodes *)
+	{attribute 'instance-path'}
+	{attribute 'no-init'}
+	myName						:ConsumerName;
+END_VAR
+VAR_STAT
+	(* default behavior for ninja monkeys *)
+	defaultCandyBehavior		:CommonNinjaCandyBehavior(0);
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Folder Name="eatCandies" Id="{2af2902d-35b6-4b1c-a054-80ff32a8c5c8}" />
+    <Method Name="eatCandyBars" Id="{d0da8f3e-8b7c-4881-a483-a837be38757f}" FolderPath="eatCandies\">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+method to eat candy bars
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD  eatCandyBars
+VAR_INPUT
+	(* amount of candy that the consumer eats in gram *)
+	amount	:CandyAmountInGram;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.candyBehavior.calculateSatisfactionLevel(THIS^.getTastiness(CandyTypes.CANDY_BARS), amount, THIS^.satisfaction);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="eatCandyCorn" Id="{b877f30a-ec84-4c6a-a985-60b15419d129}" FolderPath="eatCandies\">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+method to eat candy corn
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD  eatCandyCorn
+VAR_INPUT
+	(* amount of candy that the consumer eats in gram *)
+	amount	:CandyAmountInGram;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.candyBehavior.calculateSatisfactionLevel(THIS^.getTastiness(CandyTypes.CANDY_CORN), amount, THIS^.satisfaction);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="eatCandySticks" Id="{3f220999-65b9-42f9-ae09-f9e1a45e4207}" FolderPath="eatCandies\">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+method to eat candy sticks
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD  eatCandySticks
+VAR_INPUT
+	(* amount of candy that the consumer eats in gram *)
+	amount	:CandyAmountInGram;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.candyBehavior.calculateSatisfactionLevel(THIS^.getTastiness(CandyTypes.CANDY_STICKS), amount, THIS^.satisfaction);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="eatCaramelCandy" Id="{34e1480f-0264-4ae3-984a-b9325a4959f9}" FolderPath="eatCandies\">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+method to eat caramel candy
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD  eatCaramelCandy
+VAR_INPUT
+	(* amount of candy that the consumer eats in gram *)
+	amount	:CandyAmountInGram;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.candyBehavior.calculateSatisfactionLevel(THIS^.getTastiness(CandyTypes.CARAMEL_CANDY), amount, THIS^.satisfaction);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="eatChoclateCandy" Id="{56bf1fa1-9d41-43a5-bfa5-31a28b76d363}" FolderPath="eatCandies\">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+method to eat choclate candy
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD  eatChoclateCandy
+VAR_INPUT
+	(* amount of candy that the consumer eats in gram *)
+	amount	:CandyAmountInGram;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.candyBehavior.calculateSatisfactionLevel(THIS^.getTastiness(CandyTypes.CHOCOLATE_CANDY), amount, THIS^.satisfaction);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="eatGummyCandy" Id="{346f55ef-9ea5-4f05-a24f-c7e176d67de6}" FolderPath="eatCandies\">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+method to eat gummy candy
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD  eatGummyCandy
+VAR_INPUT
+	(* amount of candy that the consumer eats in gram *)
+	amount	:CandyAmountInGram;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.candyBehavior.calculateSatisfactionLevel(THIS^.getTastiness(CandyTypes.GUMMY_CANDY), amount, THIS^.satisfaction);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="eatHardCandy" Id="{39e5d8c3-92aa-46ea-be6c-590ea5c5c1dc}" FolderPath="eatCandies\">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+method to eat hard candy
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD  eatHardCandy
+VAR_INPUT
+	(* amount of candy that the consumer eats in gram *)
+	amount	:CandyAmountInGram;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.candyBehavior.calculateSatisfactionLevel(THIS^.getTastiness(CandyTypes.HARD_CANDY), amount, THIS^.satisfaction);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="eatJawbreakers" Id="{f0e5f38e-a3ca-4b58-9d27-fbc2f4ecb9bb}" FolderPath="eatCandies\">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+method to eat jawbrakers
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD  eatJawbreakers
+VAR_INPUT
+	(* amount of candy that the consumer eats in gram *)
+	amount	:CandyAmountInGram;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.candyBehavior.calculateSatisfactionLevel(THIS^.getTastiness(CandyTypes.JAWBREAKERS), amount, THIS^.satisfaction);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="eatLicoriceCandy" Id="{b08443e5-4f91-428e-982e-7a2cbb716346}" FolderPath="eatCandies\">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+method to eat licorice candy
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD  eatLicoriceCandy
+VAR_INPUT
+	(* amount of candy that the consumer eats in gram *)
+	amount	:CandyAmountInGram;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.candyBehavior.calculateSatisfactionLevel(THIS^.getTastiness(CandyTypes.LICORICE_CANDY), amount, THIS^.satisfaction);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="eatLollipops" Id="{c7dd5dec-e0df-4f58-b811-a4a008154e5e}" FolderPath="eatCandies\">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+method to eat lollipops
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD  eatLollipops
+VAR_INPUT
+	(* amount of candy that the consumer eats in gram *)
+	amount	:CandyAmountInGram;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.candyBehavior.calculateSatisfactionLevel(THIS^.getTastiness(CandyTypes.LOLLIPOPS), amount, THIS^.satisfaction);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="eatMints" Id="{cd4b2fe3-cb4c-4561-bfc7-9e870395d227}" FolderPath="eatCandies\">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+method to eat mints
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD  eatMints
+VAR_INPUT
+	(* amount of candy that the consumer eats in gram *)
+	amount	:CandyAmountInGram;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.candyBehavior.calculateSatisfactionLevel(THIS^.getTastiness(CandyTypes.MINTS), amount, THIS^.satisfaction);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="eatSourCandy" Id="{c5048920-7424-46bc-be34-74b8d1477555}" FolderPath="eatCandies\">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+method to eat sour candy
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD  eatSourCandy
+VAR_INPUT
+	(* amount of candy that the consumer eats in gram *)
+	amount	:CandyAmountInGram;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.candyBehavior.calculateSatisfactionLevel(THIS^.getTastiness(CandyTypes.SOUR_CANDY), amount, THIS^.satisfaction);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="FB_init" Id="{4b35f1ed-794f-41cc-bd7d-f04d9286cffd}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+it sets the candy consume behavior and remove the project nodes from name
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD FB_init : BOOL
+VAR_INPUT
+	(* if TRUE, the retain variables are initialized (warm start / cold start) *)
+	bInitRetains		:BOOL;
+	(* if TRUE, the instance afterwards gets moved into the copy code (online change) *)
+	bInCopyCode			:BOOL;
+	(* the candy consume behavior of the ninja *)
+	ninjaCandyBehavior	:REFERENCE TO AbstractNinjaCandyConsumeBehavior;
+	(* candy preferences of the ninja *)
+	candyPreferences	:REFERENCE TO IndividualCandyPreferences;
+END_VAR
+VAR CONSTANT
+	(* numer of nodes to remove from name *)
+	NUMBER_OF_PROJECT_NODES	:UINT := 2;
+	(* for the path the node delimiter string *)
+	INSTANCE_PATH_DELIMITER	:STRING(1) := '.';
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF (__ISVALIDREF(ninjaCandyBehavior)) THEN
+	THIS^.candyBehavior REF= ninjaCandyBehavior;
+ELSE
+	THIS^.candyBehavior REF= THIS^.defaultCandyBehavior;
+END_IF
+THIS^.candyPreferences REF= candyPreferences;
+THIS^.removeNodesFromPath(THIS^.myName, NUMBER_OF_PROJECT_NODES, INSTANCE_PATH_DELIMITER);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="getTastiness" Id="{c87dc48d-a137-4a76-99f6-fdd2267260fb}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+This method is just to deal with invalid
+candy preferences, no preferences means everthing is DELICIOUS
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD PRIVATE getTastiness :TasteScale
+VAR_INPUT
+	candyType	:CandyTypes;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF (__ISVALIDREF(THIS^.candyPreferences)) THEN
+	getTastiness := THIS^.candyPreferences.howIsTheCandy(candyType);
+ELSE
+	getTastiness := TasteScale.DELICIOUS;
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="lootCandies" Id="{c0931b49-ca1b-47c0-8a7f-cd71e87dad0a}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+This is an api method to loot a candy vending machine with the consumer
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD lootCandies
+VAR_INPUT
+	(* rising edge strats the looting *)
+	execute :BOOL;
+END_VAR
+VAR_INST
+	(* to get the rising edge of the execute flag *)
+	executionEdge	:Tc2_Standard.R_TRIG;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[executionEdge(CLK := execute);
+RETURN(NOT executionEdge.Q);
+THIS^.candyBehavior.lootACandyMachine(THIS^, THIS^.candyPreferences);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="name" Id="{abdd5148-181c-4078-8f92-aab7cfec9516}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+the instance path of the consumer without the project nodes
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+PROPERTY name :ConsumerName]]></Declaration>
+      <Get Name="Get" Id="{8a37f2ca-17d9-4601-ab72-d3f6a79803ad}">
+        <Declaration><![CDATA[(*
+
+short summary
+=============
+getter for the instance name of the object
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[name := THIS^.myName;
+]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="removeNodesFromPath" Id="{289526de-0534-41f8-b159-70abe74256b0}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+helper method to remove nodes from a path
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+{attribute 'estimated-stack-usage' := '4096'}
+METHOD PRIVATE removeNodesFromPath
+VAR_IN_OUT
+	(* the path to remove the nodes from it *)
+	path :Tc2_System.T_MaxString;
+END_VAR
+VAR_INPUT
+	
+	numberOfNodesToRemove	:UINT;
+	delimiter				:STRING(1);
+END_VAR
+VAR
+	found	:INT;
+END_VAR
+VAR CONSTANT
+	NOTHING		:INT := 0;
+	NO_NODES	:UINT:= 0;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[RETURN (numberOfNodesToRemove <= NO_NODES);
+found := Tc2_Standard.FIND(path, delimiter);
+RETURN (found <= NOTHING);
+path := RIGHT(path, LEN(path) - found);
+THIS^.removeNodesFromPath(path, numberOfNodesToRemove-1, delimiter);
+]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

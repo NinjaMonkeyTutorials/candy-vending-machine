@@ -159,6 +159,9 @@
     <Compile Include="NinjaMonkeys\Classes\IndividualCandyPreferences.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="NinjaMonkeys\Classes\NinjaMonkey.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Tasks\Main\MAIN.TcPOU">
       <SubType>Code</SubType>
     </Compile>
