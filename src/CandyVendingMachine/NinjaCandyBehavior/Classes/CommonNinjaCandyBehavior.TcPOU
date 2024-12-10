@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="CommonNinjaCandyBehavior" Id="{9312bbe5-72ba-48e2-ac36-4c623a3f88cc}" SpecialFunc="None">
+    <Declaration><![CDATA[(*
+
+short summary
+=============
+the behavior of a common ninja
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+FUNCTION_BLOCK CommonNinjaCandyBehavior EXTENDS AbstractNinjaCandyConsumeBehavior
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="calculateSatisfactionLevel" Id="{a1688fc4-9f1e-4e1b-8180-36583c32b647}">
+      <Declaration><![CDATA[(*
+
+short summary
+=============
+This method calculates the satisfaction level
+for a candy eating usual consumer.
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+METHOD  calculateSatisfactionLevel
+VAR_INPUT
+	(* taste scale of candy *)
+	tastiness				:TasteScale;
+	(* amount of the candies to eat *)
+	amountOfCandy			:CandyAmountInGram;
+END_VAR
+VAR_IN_OUT
+	(* the satisfaction level of the consumer *)
+	actualSatisfactionLevel	:SatisfactionLevelInPercent;
+END_VAR
+VAR
+	(* the common consumer likes DELICIOUS and Okay *)
+	pickyScale :DINT;
+	(* relationship between actual and maximum satisfaction level *)
+	statisfactionRelationship :REAL;
+	gradient :REAL;
+	(* relationship between given and maximum candy amaount *) 
+	amountRelationship :REAL;
+END_VAR
+VAR CONSTANT
+	(* maximum possible satisfaction level*)
+	MAX_SATISFACTION 		:SatisfactionLevelInPercent := 100;
+	(* it is a lower limit as it is named *)
+	AVOID_DIVISON_BY_ZERO 	:SatisfactionLevelInPercent := 1;
+	(* factor for the greediness of the consumer *)
+	GREEDINESS				:SatisfactionLevelInPercent := 79;
+	(* for one a candy package the maximum amount *)
+	MAX_AMOUNT				:CandyAmountInGram := 500;
+	(* between e and 10 *)
+	LOGARITHM_BASE			:REAL := 6.359;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[RETURN(actualSatisfactionLevel >= MAX_SATISFACTION);
+
+pickyScale					:= SEL(tastiness = TasteScale.OKAY, tastiness, TasteScale.DELICIOUS);
+statisfactionRelationship	:= TO_REAL(MAX_SATISFACTION)/LIMIT(AVOID_DIVISON_BY_ZERO, actualSatisfactionLevel, MAX_SATISFACTION);
+gradient					:= LN(statisfactionRelationship)/LN(LOGARITHM_BASE);
+amountRelationship			:= TO_REAL(amountOfCandy)/TO_REAL(MAX_AMOUNT);
+
+{warning disable C0196}
+{warning disable C0197}
+actualSatisfactionLevel := TO_UINT(
+	actualSatisfactionLevel + TO_SINT(
+		gradient * amountRelationship * (MAX_SATISFACTION - GREEDINESS) * pickyScale
+	)
+);
+{warning restore C0196}
+{warning restore C0197}
+]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>
