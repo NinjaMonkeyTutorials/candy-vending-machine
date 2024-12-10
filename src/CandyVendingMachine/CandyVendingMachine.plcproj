@@ -123,6 +123,9 @@
     <Compile Include="CandyMachineProvider\Classes\CandyMachineProvider.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="CandyMachineProvider\Classes\NinjaIncCandyMachineProvider.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="CandyMachine\Classes\AbstractCandyMachine.TcPOU">
       <SubType>Code</SubType>
     </Compile>

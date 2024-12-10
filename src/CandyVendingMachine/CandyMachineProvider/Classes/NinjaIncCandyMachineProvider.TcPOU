@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="NinjaIncCandyMachineProvider" Id="{bb674f5d-2073-4d7c-a572-d109c28d93ed}" SpecialFunc="None">
+    <Declaration><![CDATA[(*
+
+short summary
+=============
+here you'll find the best candy vending machines
+on the market
+
+legal notes
+===========
+SPDX-FileCopyrightText: © 2024 ekvip automation GmbH <info@ekvip.de>
+SPDX-License-Identifier: Apache-2.0
+For details check: Apache-2.0_
+
+.. _Apache-2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+*)
+
+FUNCTION_BLOCK NinjaIncCandyMachineProvider EXTENDS CandyMachineProvider
+VAR_STAT
+	(* the candy machine for greedy ninja monkeys *)
+	greedyMachine	    :GreedyCandyMachine();
+	(* the candy machine for picky ninja monkeys *) 
+	pickyMachine		:PickyCandyMachine();
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="FB_Init" Id="{c263cd61-1d60-45de-8579-72232047fa2e}">
+      <Declaration><![CDATA[METHOD FB_Init :BOOL
+VAR_INPUT
+	(* TRUE: the retain variables are initialized (reset warm / reset cold) *)
+    bInitRetains: BOOL;
+	(* TRUE: the instance will be copied to the copy code afterward (online change) *)
+    bInCopyCode: BOOL;
+	(* Ninjas have a individual consume behavior and nina inc respects it *)
+	consumerType :ConsumerTypes;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE consumerType OF
+ConsumerTypes.GREEDY:
+	customCandyMachine REF= THIS^.greedyMachine;	
+ConsumerTypes.PICKY:
+	customCandyMachine REF= THIS^.pickyMachine;
+ELSE;// just use the default candy machine
+END_CASE]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>
