@@ -2,6 +2,8 @@
 
 Welcome to the **Ninja Monkey Function Blocks** repository! This is the companion source code for the fun and insightful [Ninja Monkey](https://www.youtube.com/@ninjamonkeystutorials) video series on **OOP in PLC programming** using [TwinCAT 3 4026](https://www.beckhoff.com/en-en/products/automation/twincat/twincat-3-build-4026/). 🎥
 
+[🎥 watch part 1](https://www.youtube.com/watch?v=z1h-uQhCY4A)
+
 ## Table-Of-Contents
 
 ## 🍭 Table of Contents
