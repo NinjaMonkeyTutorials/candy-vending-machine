@@ -29,7 +29,7 @@ VAR
 	(* candy preferences of Ajnin *)
 	ajninPreferences	:AjninsCandyPreferences();
 	(* yeknom as candy consumer *)
-	yeknom				:NinjaMonkey(0,0);
+	yeknom				:NinjaMonkey(greedy,0);
 	(* ajnin as candy consumer *)
 	ajnin				:NinjaMonkey(picky, ajninPreferences);
 	(* rising edge will feed Ajnin *)
